@@ -431,8 +431,8 @@ ul {
 
         <div class="register-form-container">
             <div class="form-tabs">
-                <a href="#" class="tab-button tab-association active">association</a>
-                <a href="#" class="tab-button tab-donateur">donateur</a>
+                <a href="{{ url('/inscrire') }}" class="tab-button tab-association active">association</a>
+                <a href="{{ url('/donateur/inscrire') }}" class="tab-button tab-donateur">donateur</a>
                 <a href="#" class="tab-button tab-administrateur">administrateur</a>
             </div>
 

@@ -11,3 +11,9 @@ Route::get('/inscrire', function () {
 Route::get('/connecter', function () {
     return view('association.connecterassociation');
 });
+// -----------------------
+// Donateur
+// -----------------------
+Route::get('/donateur/inscrire', function () {
+    return view('donateur.inscriredonateur');
+});
