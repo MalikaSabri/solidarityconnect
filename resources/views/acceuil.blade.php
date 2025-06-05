@@ -103,7 +103,7 @@
 
         /* Hero Section (Keep existing style from test.html for content below header) */
         .hero {
-            background: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d') center/cover no-repeat;
+            background: url('/images/solidarity.jpeg') center/cover no-repeat;
             height: 400px;
             color: white;
             text-align: center;
@@ -322,9 +322,9 @@
             <a href="#" class="logo">SolidarityConnect</a>
             <nav class="navbar">
                 <ul class="nav-links">
-                    <li><a href="#">Accueil</a></li>
-                    <li><a href="#" class="active">Inscrire</a></li>
-                    <li><a href="#">Se connecter</a></li>
+                    <li><a href="{{ url('/') }}">Accueil</a></li>
+                    <li><a href="{{ url('/inscrire') }}" class="active">Inscrire</a></li>
+                    <li><a href="{{ url('/connecter') }}">Se connecter</a></li>
                 </ul>
             </nav>
         </div>
@@ -334,7 +334,9 @@
         <h1>Commencez un avenir solidaire et lumineux</h1>
         <p>Une plateforme qui relie les donateurs aux associations en toute simplicité.</p>
         <button>Faire un don</button>
+        <a href="{{ url('/inscrire') }}">
         <button>Inscrire mon association</button>
+        </a>
     </section>
 
     <section class="features">
