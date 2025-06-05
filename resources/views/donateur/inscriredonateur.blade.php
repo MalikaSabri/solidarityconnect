@@ -217,9 +217,9 @@ ul {
 
 .form-group label {
     position: absolute;
-    top: 15px; /* Adjust based on padding */
+    top: -23px; /* Adjust based on padding */
     left: 20px; /* Adjust based on padding */
-    color: var(--color-black-text);
+    color: white;
     font-size: 16px;
     pointer-events: none; /* Allows clicks to pass through to input */
     transition: all 0.2s ease-out;
@@ -419,7 +419,7 @@ ul {
         <div class="register-left-panel">
             <h2 class="welcome-heading">Welcome</h2>
             <p class="welcome-text">Un petit geste pour vous, un grand changement pour quelqu'un d'autre</p>
-            <a href="#" class="btn-connect">Se Connecter</a>
+            <a href="{{ url('/login') }}" class="btn-connect">Se Connecter</a>
         </div>
 
         <div class="register-form-container">

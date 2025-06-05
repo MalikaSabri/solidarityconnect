@@ -31,6 +31,29 @@
             display: flex;
             flex-direction: column;
         }
+        .logout-form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.logout-form button {
+    background: none;
+    border: none;
+    color: var(--color-white);
+    font-weight: 500;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-size: inherit;
+    padding: 0;
+}
+
+.logout-form button:hover {
+    opacity: 1;
+    text-decoration: none;
+}
 
         a {
             text-decoration: none;
@@ -449,22 +472,25 @@
 <body>
     <header class="header">
         <a href="#" class="logo">SolidarityConnect</a>
-        <a href="#" class="logout-link">Déconnexion</a>
+             <form action="{{ route('association.logout') }}" method="POST" class="logout-form">
+    @csrf
+    <button type="submit" class="logout-link">Déconnexion</button>
+</form>
     </header>
 
     <div class="page-wrapper">
-        <div class="left-panel">
-            <div class="profile-avatar">EM</div>
-            <div class="profile-info">
-                <h4>Nom Complet :</h4>
-                <p>----------</p>
-                <h4>Email :</h4>
-                <p>----------</p>
-                <h4>Téléphone :</h4>
-                <p>----------</p>
-            </div>
-            <a href="#" class="btn-retour">Retour</a>
-        </div>
+      <div class="left-panel">
+    <div class="profile-avatar">{{ substr($association->nom_complet, 0, 2) }}</div>
+    <div class="profile-info">
+        <h4>Nom Complet :</h4>
+        <p>{{ $association->nom_complet }}</p>
+        <h4>Email :</h4>
+        <p>{{ $association->email }}</p>
+        <h4>Téléphone :</h4>
+        <p>{{ $association->telephone }}</p>
+    </div>
+    <a href="{{ route('association.profil') }}" class="btn-retour">Retour</a>
+</div>
 
         <div class="form-main-container">
             <h3>Nouveau besoin</h3>

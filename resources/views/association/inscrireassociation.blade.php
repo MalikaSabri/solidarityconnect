@@ -219,15 +219,16 @@ ul {
 
 .form-group label {
     position: absolute;
-    top: 15px; /* Adjust based on padding */
+    top:-23px; /* Adjust based on padding */
     left: 20px; /* Adjust based on padding */
-    color: var(--color-black-text);
+    color: white;
     font-size: 16px;
     pointer-events: none; /* Allows clicks to pass through to input */
     transition: all 0.2s ease-out;
     background-color: transparent; /* No background on label */
     padding: 0 5px; /* Small padding for background if it floats */
     transform-origin: left top;
+
 }
 
 .form-group input {
@@ -421,7 +422,7 @@ ul {
         <div class="register-left-panel">
             <h2 class="welcome-heading">Welcome</h2>
             <p class="welcome-text">Un petit geste pour vous, un grand changement pour quelqu'un d'autre</p>
-            <a href="#" class="btn-connect">Se Connecter</a>
+            <a href="{{ url('/connecter') }}" class="btn-connect">Se Connecter</a>
         </div>
 
         <div class="register-form-container">
@@ -432,7 +433,7 @@ ul {
 
             <h3 class="form-title">Inscrire en tant qu'asoociation</h3>
 
-            <form action="" method="POST" class="registration-form">
+            <form action="{{ route('association.store') }}" method="POST" class="registration-form">
                 @csrf
                 <div class="form-grid">
                     <div class="form-group">
@@ -461,6 +462,7 @@ ul {
                     </div>
                 </div>
                 <button type="submit" class="btn-inscrire">Inscrire</button>
+                
             </form>
         </div>
     </div>

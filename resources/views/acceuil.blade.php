@@ -121,10 +121,10 @@
 
         .hero button {
             margin: 0 1rem;
-            background-color: #06B6D4;
+            background-color:  #1E3A8A;
             border: none;
             padding: 10px 20px;
-            color: white;
+            color: rgb(255, 255, 255);
             font-weight: bold;
             border-radius: 5px;
             cursor: pointer;
@@ -322,8 +322,8 @@
             <a href="#" class="logo">SolidarityConnect</a>
             <nav class="navbar">
                 <ul class="nav-links">
-                    <li><a href="{{ url('/') }}">Accueil</a></li>
-                    <li><a href="{{ url('/inscrire') }}" class="active">Inscrire</a></li>
+                    <li><a href="{{ url('/') }}" class="active">Accueil</a></li>
+                    <li><a href="{{ url('/inscrire') }}" >Inscrire</a></li>
                     <li><a href="{{ url('/connecter') }}">Se connecter</a></li>
                 </ul>
             </nav>
@@ -333,7 +333,9 @@
     <section class="hero">
         <h1>Commencez un avenir solidaire et lumineux</h1>
         <p>Une plateforme qui relie les donateurs aux associations en toute simplicité.</p>
+        <a href="{{ url('/login') }}">
         <button>Faire un don</button>
+        </a>
         <a href="{{ url('/inscrire') }}">
         <button>Inscrire mon association</button>
         </a>

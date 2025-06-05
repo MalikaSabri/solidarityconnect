@@ -224,9 +224,9 @@ ul {
 
 .form-group label {
     position: absolute;
-    top: 15px; /* Adjust based on padding */
+    top: -25px; /* Adjust based on padding */
     left: 20px; /* Adjust based on padding */
-    color: var(--color-black-text);
+    color: white;
     font-size: 16px;
     pointer-events: none; /* Allows clicks to pass through to input */
     transition: all 0.2s ease-out;
@@ -426,30 +426,36 @@ ul {
         <div class="register-left-panel">
             <h2 class="welcome-heading">Welcome</h2>
             <p class="welcome-text">Un petit geste pour vous, un grand changement pour quelqu'un d'autre</p>
-            <a href="#" class="btn-connect">S'inscrire</a>
+            <a href="{{ url('inscrire') }}"class="btn-connect">S'inscrire</a>
         </div>
 
         <div class="register-form-container">
             <div class="form-tabs">
                 <a href="{{ url('/inscrire') }}" class="tab-button tab-association active">association</a>
-                <a href="{{ url('/donateur/inscrire') }}" class="tab-button tab-donateur">donateur</a>
-                <a href="#" class="tab-button tab-administrateur">administrateur</a>
+                <a href="{{ url('/login') }}" class="tab-button tab-donateur">donateur</a>
+                <a href="{{ url('/admin/login') }}" class="tab-button tab-administrateur">administrateur</a>
             </div>
 
             <h3 class="form-title">Connecter en tant qu'association</h3>
 
-            <form action="" method="POST" class="registration-form">
-                @csrf
-                <div class="form-group">
-                    <label for="email">Email *</label>
-                    <input type="email" id="email" name="email" required placeholder=" ">
-                </div>
-                <div class="form-group">
-                    <label for="password">Mot de passe *</label>
-                    <input type="password" id="password" name="password" required placeholder=" ">
-                </div>
-                <button type="submit" class="btn-inscrire">Inscrire</button>
-            </form>
+         <form action="{{ route('association.login') }}" method="POST" class="registration-form">
+    @csrf
+    <div class="form-group">
+        <input type="email" id="email" name="email" required placeholder=" " value="{{ old('email') }}">
+        <label for="email">Email *</label>
+    </div>
+    <div class="form-group">
+        <input type="password" id="password" name="password" required placeholder=" ">
+        <label for="password">Mot de passe *</label>
+    </div>
+    <button type="submit" class="btn-inscrire">Se connecter</button>
+</form>
+
+@if($errors->any())
+    <div class="alert alert-danger" style="color: red; margin-top: 20px;">
+        {{ $errors->first() }}
+    </div>
+@endif
         </div>
     </div>
 </body>

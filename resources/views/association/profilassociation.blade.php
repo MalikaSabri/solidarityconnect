@@ -293,7 +293,38 @@
         .btn-interess:hover {
             background-color: #059FB9; /* Darker teal */
         }
+        .profile-avatar {
+    /* Vos styles existants... */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: var(--color-dark-blue);
+}
+.logout-form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
 
+.logout-form button {
+    background: none;
+    border: none;
+    color: var(--color-white);
+    font-weight: 500;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-size: inherit;
+    padding: 0;
+}
+
+.logout-form button:hover {
+    opacity: 1;
+    text-decoration: none;
+}
 
         /* Responsive Design */
         @media (max-width: 1200px) {
@@ -425,22 +456,45 @@
 <body>
     <header class="header">
         <a href="#" class="logo">SolidarityConnect</a>
-        <a href="#" class="logout-link">Déconnexion</a>
+        <form action="{{ route('association.logout') }}" method="POST" class="logout-form">
+    @csrf
+    <button type="submit" class="logout-link">Déconnexion</button>
+</form>
     </header>
 
     <div class="profile-page-wrapper">
-        <div class="profile-left-panel">
-            <div class="profile-avatar"></div>
-            <div class="profile-info">
-                <h4>Nom Complet :</h4>
-                <p>----------</p>
-                <h4>Email :</h4>
-                <p>----------</p>
-                <h4>Téléphone :</h4>
-                <p>----------</p>
-            </div>
-            <a href="#" class="btn-publish-need">publier un besoin</a>
-        </div>
+       <div class="profile-left-panel">
+    <div class="profile-avatar" style="background-color: {{ $association->color }};">
+    @php
+        // Récupérer les initiales du nom complet
+        $words = explode(' ', $association->nom_complet);
+        $initials = '';
+
+        // Prendre la première lettre du premier mot
+        if(count($words) > 0) {
+            $initials .= strtoupper(substr($words[0], 0, 1));
+        }
+
+        // Si il y a un deuxième mot, prendre sa première lettre
+        // if(count($words) > 1) {
+        //     $initials .= strtoupper(substr($words[1], 0, 1));
+        // }
+
+        // // Si pas de deuxième mot, juste garder la première lettre
+        // echo $initials;
+    @endphp
+    {{ $association->initials }}
+</div>
+    <div class="profile-info">
+        <h4>Nom Complet :</h4>
+        <p>{{ $association->nom_complet }}</p>
+        <h4>Email :</h4>
+        <p>{{ $association->email }}</p>
+        <h4>Téléphone :</h4>
+        <p>{{ $association->telephone }}</p>
+    </div>
+    <a href="{{ route('association.besoin.create') }}" class="btn-publish-need">publier un besoin</a>
+</div>
 
         <div class="profile-main-content">
             <section class="urgent-needs-section">

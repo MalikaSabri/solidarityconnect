@@ -222,9 +222,9 @@ ul {
 
 .form-group label {
     position: absolute;
-    top: 15px; /* Adjust based on padding */
+    top: -23px; /* Adjust based on padding */
     left: 20px; /* Adjust based on padding */
-    color: var(--color-black-text);
+    color: white;
     font-size: 16px;
     pointer-events: none; /* Allows clicks to pass through to input */
     transition: all 0.2s ease-out;
@@ -412,9 +412,9 @@ ul {
             <a href="#" class="logo">SolidarityConnect</a>
             <nav class="navbar">
                 <ul class="nav-links">
-                    <li><a href="#">Accueil</a></li>
-                    <li><a href="#">Inscrire</a></li>
-                    <li><a href="#" class="active">Se connecter</a></li>
+                    <li><a href="{{ url('/') }}">Accueil</a></li>
+                    <li><a href="{{ url('/inscrire') }}">Inscrire</a></li>
+                    <li><a href="{{ url('/connecter') }}" class="active">Se connecter</a></li>
                 </ul>
             </nav>
         </div>
@@ -424,14 +424,14 @@ ul {
         <div class="register-left-panel">
             <h2 class="welcome-heading">Welcome</h2>
             <p class="welcome-text">Un petit geste pour vous, un grand changement pour quelqu'un d'autre</p>
-            <a href="#" class="btn-connect">S'inscrire</a>
+            <a href="{{ url('/donateur/inscrire') }}" class="btn-connect">S'inscrire</a>
         </div>
 
         <div class="register-form-container">
             <div class="form-tabs">
-                <a href="#" class="tab-button tab-association ">association</a>
-                <a href="#" class="tab-button tab-donateur active">donateur</a>
-                <a href="#" class="tab-button tab-administrateur">administrateur</a>
+                <a href="{{ url('/connecter') }}"  class="tab-button tab-association ">association</a>
+                <a href="{{ url('/login') }}" class="tab-button tab-donateur active">donateur</a>
+                <a href="{{ url('/admin/login') }}" class="tab-button tab-administrateur">administrateur</a>
             </div>
 
             <h3 class="form-title">Connecter en tant que donateur</h3>
