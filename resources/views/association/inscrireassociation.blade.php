@@ -104,17 +104,20 @@ ul {
 
 /* Left Panel */
 .register-left-panel {
-    background-color: var(--color-light-gray); /* Same as body background */
+    /* background-color: var(--color-light-gray); */
     text-align: center;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
-    flex-shrink: 0; /* Don't shrink */
-    width: 280px; /* Fixed width as in image */
-    max-width: 100%; /* For responsiveness */
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    width: 34rem;
+    height: 34rem;
+    border-radius: 7% 2% 2% 7%;
+    background-color: #ffffff;
 }
+
 
 .welcome-heading {
     font-size: 48px;
@@ -278,7 +281,7 @@ ul {
     }
 
     .register-left-panel {
-        width: 100%;
+        /* width: 100%; */
         padding: 30px;
     }
 
@@ -406,9 +409,9 @@ ul {
             <a href="#" class="logo">SolidarityConnect</a>
             <nav class="navbar">
                 <ul class="nav-links">
-                    <li><a href="#">Accueil</a></li>
-                    <li><a href="#" class="active">Inscrire</a></li>
-                    <li><a href="#">Se connecter</a></li>
+                    <li><a href="{{ url('/') }}">Accueil</a></li>
+                    <li><a href="{{ url('/inscrire') }}" class="active">Inscrire</a></li>
+                    <li><a href="{{ url('/connecter') }}">Se connecter</a></li>
                 </ul>
             </nav>
         </div>
@@ -424,12 +427,12 @@ ul {
         <div class="register-form-container">
             <div class="form-tabs">
                 <a href="#" class="tab-button tab-association active">association</a>
-                <a href="#" class="tab-button tab-donateur ">donateur</a>
+                <a href="{{ url('/donateur/inscrire') }}" class="tab-button tab-donateur ">donateur</a>
             </div>
 
             <h3 class="form-title">Inscrire en tant qu'asoociation</h3>
 
-            <form action="{{ route('register') }}" method="POST" class="registration-form">
+            <form action="" method="POST" class="registration-form">
                 @csrf
                 <div class="form-grid">
                     <div class="form-group">
