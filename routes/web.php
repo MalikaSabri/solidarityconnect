@@ -25,6 +25,34 @@ Route::get('/association/profil', [App\Http\Controllers\AssociationController::c
 Route::get('/association/connecter', [AssociationController::class, 'showLoginForm'])->name('association.login.form');
 Route::post('/association/connecter', [AssociationController::class, 'login'])->name('association.login');
 
+// Route pour m'interesse
+Route::post('/association/interesse/{donation}', [AssociationController::class, 'interesse'])
+    ->name('association.interesse')
+    ->middleware('auth:association');
+
+
+Route::get('/association/besoins', [AssociationController::class, 'indexBesoins'])
+    ->name('association.besoins.index')
+    ->middleware('auth:association');
+
+Route::get('/association/dons', [AssociationController::class, 'indexDons'])
+    ->name('association.dons.index')
+    ->middleware('auth:association');
+
+
+    Route::post('/association/besoin/store', [AssociationController::class, 'storeBesoin'])
+    ->name('association.besoin.store')
+    ->middleware('auth:association');
+
+
+
+
+
+
+
+
+
+
 
 // -----------------------
 // Donateur

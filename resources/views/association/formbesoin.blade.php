@@ -480,7 +480,27 @@
 
     <div class="page-wrapper">
       <div class="left-panel">
-    <div class="profile-avatar">{{ substr($association->nom_complet, 0, 2) }}</div>
+          <div class="profile-avatar" style="background-color: {{ $association->color }};">
+        @php
+            // Récupérer les initiales du nom complet
+            $words = explode(' ', $association->nom_complet);
+            $initials = '';
+
+            // Prendre la première lettre du premier mot
+            if(count($words) > 0) {
+                $initials .= strtoupper(substr($words[0], 0, 1));
+            }
+
+            // Si il y a un deuxième mot, prendre sa première lettre
+            // if(count($words) > 1) {
+            //     $initials .= strtoupper(substr($words[1], 0, 1));
+            // }
+
+            // // Si pas de deuxième mot, juste garder la première lettre
+            // echo $initials;
+        @endphp
+        {{ $association->initials }}
+    </div>
     <div class="profile-info">
         <h4>Nom Complet :</h4>
         <p>{{ $association->nom_complet }}</p>
@@ -496,29 +516,30 @@
             <h3>Nouveau besoin</h3>
 
             <h4 class="section-title">Détails du besoin</h4>
-            <form style="width: 100%;"> <div class="input-group">
-                    <label for="titre">Titre</label>
-                    <div class="input-field-box">
-                        <input type="text" id="titre" name="titre" placeholder="Ex : Vêtements pour enfants">
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label for="description">Description</label>
-                    <div class="input-field-box">
-                        <textarea id="description" name="description" placeholder="Ex : Nous avons besoin de ...."></textarea>
-                    </div>
-                </div>
-
-                <div class="status-dropdown-group">
-                    <label for="status">Status</label>
-                    <select id="status" name="status" class="status-select">
-                        <option value="urgent">Urgent</option>
-                        <option value="normal">Normal</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn-publish">Publier le besoin</button>
-            </form>
+           <form action="{{ route('association.besoin.store') }}" method="POST" style="width: 100%;">
+    @csrf
+    <div class="input-group">
+        <label for="titre">Titre</label>
+        <div class="input-field-box">
+            <input type="text" id="titre" name="titre" placeholder="Ex : Vêtements pour enfants" required>
+        </div>
+    </div>
+    <div class="input-group">
+        <label for="description">Description</label>
+        <div class="input-field-box">
+            <textarea id="description" name="description" placeholder="Ex : Nous avons besoin de ...." required></textarea>
+        </div>
+    </div>
+    <div class="status-dropdown-group">
+        <label for="status">Status</label>
+        <select id="status" name="status" class="status-select" required>
+            <option value="">Sélectionner un statut</option>
+            <option value="Urgent">Urgent</option>
+            <option value="Normal">Normal</option>
+        </select>
+    </div>
+    <button type="submit" class="btn-publish">Publier le besoin</button>
+</form>
         </div>
     </div>
 </body>

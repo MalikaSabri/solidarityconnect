@@ -6,6 +6,9 @@ use App\Models\Association;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Besoin;
+use App\Models\Donation;
+use App\Models\Interesse;
 
 class AssociationController extends Controller
 {
@@ -47,8 +50,23 @@ class AssociationController extends Controller
             return redirect('/connecter');
         }
 
-        $association = auth()->guard('association')->user();
-        return view('association.profilassociation', compact('association'));
+           $association = Auth::guard('association')->user();
+
+    // Récupérer les 3 besoins urgents
+    $urgentNeeds = Besoin::with('association')
+        ->where('status', 'Urgent')
+        ->orderBy('created_at', 'desc')
+        ->take(3)
+        ->get();
+
+    // Récupérer les 3 dons récents
+    $recentDonations = Donation::with('donateur')
+        ->where('statut', 'Disponible')
+        ->orderBy('created_at', 'desc')
+        ->take(3)
+        ->get();
+
+    return view('association.profilassociation', compact('association', 'urgentNeeds', 'recentDonations'));
     }
 
     public function logout(Request $request)
@@ -83,6 +101,50 @@ public function login(Request $request)
     return back()->withErrors([
         'email' => 'Les identifiants fournis ne correspondent pas à nos enregistrements.',
     ])->onlyInput('email');
+}
+
+public function interesse(Request $request, Donation $donation)
+{
+    // Vérifier si l'association est déjà intéressée
+    $alreadyInterested = Interesse::where('id_association', auth()->guard('association')->id())
+        ->where('id_donation', $donation->id)
+        ->exists();
+
+    if (!$alreadyInterested) {
+        Interesse::create([
+            'id_association' => auth()->guard('association')->id(),
+            'id_donation' => $donation->id,
+            'interesse' => true,
+        ]);
+
+        return back()->with('success', 'Votre intérêt a été enregistré !');
+    }
+
+    return back()->with('info', 'Vous avez déjà exprimé votre intérêt pour ce don');
+}
+
+public function indexBesoins()
+{
+    $this->authorize('viewAny', Besoin::class);
+    $association = Auth::guard('association')->user();
+
+    $besoins = Besoin::with('association')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10); // ou ->get() si vous ne voulez pas de pagination
+
+    return view('association.tous_les_besoins', compact('association', 'besoins'));
+}
+
+public function indexDons()
+{
+
+    $association = Auth::guard('association')->user();
+
+    $dons = Donation::with('donateur')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+
+    return view('association.tous_les_dons', compact('association', 'dons'));
 }
 
 

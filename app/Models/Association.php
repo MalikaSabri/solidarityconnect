@@ -51,4 +51,14 @@ public function getColorAttribute()
     $hash = md5($this->nom_complet);
     return sprintf("#%s", substr($hash, 0, 6));
 }
+
+public function besoins()
+{
+    return $this->hasMany(Besoin::class, 'id_association');
+}
+
+public function interesses()
+{
+    return $this->hasMany(Interesse::class, 'id_association');
+}
 }
