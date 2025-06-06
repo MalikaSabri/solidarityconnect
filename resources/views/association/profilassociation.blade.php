@@ -333,6 +333,33 @@
         color: var(--color-gray-text);
         font-size: 18px;
     }
+.view-selector {
+    position: relative;
+}
+
+.content-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: var(--color-light-blue-input);
+    color: var(--color-dark-blue-text);
+    padding: 8px 35px 8px 15px;
+    border: 1px solid var(--color-dark-blue);
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+}
+
+.view-selector::after {
+    content: '▼';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-dark-blue);
+    pointer-events: none;
+}
 
             /* Responsive Design */
             @media (max-width: 1200px) {
@@ -516,13 +543,19 @@
 
             <div class="profile-main-content">
             <section class="urgent-needs-section">
-        <div class="section-header">
-            <h3>Besoins Urgents</h3>
-            <a href="{{ route('association.besoins.index') }}" class="view-all-link">Voir tous les besoins</a>
-        </div>
-        <div class="cards-container">
-            @forelse($urgentNeeds as $need)
-                <div class="card need-card">
+<div class="section-header">
+    <h3>Besoins Urgents</h3>
+    <div class="view-selector">
+        <select id="content-selector" class="content-select">
+            <option value="besoins">Voir les besoins</option>
+            <option value="dons">Voir les dons</option>
+        </select>
+    </div>
+</div>
+     <div class="cards-container" id="besoins-container">
+    @forelse($allNeeds as $need)
+        <div class="card need-card">
+               <div class="card need-card">
                     <div class="card-header">
                         <h4 class="card-title">{{ $need->titre }}</h4>
                     </div>
@@ -533,22 +566,21 @@
                         <span class="info-tag">{{ $need->status }}</span>
                     </div>
                 </div>
-            @empty
-                <div class="no-results">
-                    <p>Aucun besoin urgent trouvé</p>
-                </div>
-            @endforelse
         </div>
+    @empty
+        <div class="no-results">
+            <p>Aucun besoin trouvé</p>
+        </div>
+    @endforelse
+</div>
     </section>
 
             <section class="recent-donations-section">
-        <div class="section-header">
-            <h3>Dons Récents</h3>
-            <a href="{{ route('association.dons.index') }}" class="view-all-link">Voir tous les dons</a>
-        </div>
-        <div class="cards-container">
-            @forelse($recentDonations as $donation)
-                <div class="card donation-card">
+ 
+   <div class="cards-container" id="dons-container" style="display: none;">
+    @forelse($allDonations as $donation)
+        <div class="card donation-card">
+           <div class="card donation-card">
                     <span class="status-tag">{{ $donation->statut }}</span>
                     <form action="{{ route('association.interesse', $donation->id) }}" method="POST">
                         @csrf
@@ -568,14 +600,45 @@
                         <span class="info-tag">{{ $donation->type }}</span>
                     </div>
                 </div>
-            @empty
-                <div class="no-results">
-                    <p>Aucun don récent trouvé</p>
-                </div>
-            @endforelse
         </div>
+    @empty
+        <div class="no-results">
+            <p>Aucun don trouvé</p>
+        </div>
+    @endforelse
+</div>
     </section>
             </div>
         </div>
     </body>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const contentSelector = document.getElementById('content-selector');
+    const besoinsContainer = document.querySelector('.urgent-needs-section .cards-container');
+    const donsContainer = document.querySelector('.recent-donations-section .cards-container');
+
+    // Cache initial des dons (on montre les besoins par défaut)
+    donsContainer.style.display = 'none';
+
+    contentSelector.addEventListener('change', function() {
+        if (this.value === 'besoins') {
+            besoinsContainer.style.display = 'grid';
+            donsContainer.style.display = 'none';
+            document.querySelector('.urgent-needs-section h3').textContent = 'Besoins Urgents';
+        } else {
+            besoinsContainer.style.display = 'none';
+            donsContainer.style.display = 'grid';
+            document.querySelector('.urgent-needs-section h3').textContent = 'Dons Récents';
+        }
+    });
+
+    // Gestion du chargement initial en fonction de l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const view = urlParams.get('view');
+    if (view === 'dons') {
+        contentSelector.value = 'dons';
+        contentSelector.dispatchEvent(new Event('change'));
+    }
+});
+</script>
     </html>

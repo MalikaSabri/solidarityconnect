@@ -44,30 +44,40 @@ class AssociationController extends Controller
         ->with('success', 'Inscription réussie !');
 }
 
-    public function show()
-    {
-        if (!auth()->guard('association')->check()) {
-            return redirect('/connecter');
-        }
+public function show()
+{
+    if (!auth()->guard('association')->check()) {
+        return redirect('/connecter');
+    }
 
-           $association = Auth::guard('association')->user();
+    $association = Auth::guard('association')->user();
 
-    // Récupérer les 3 besoins urgents
-    $urgentNeeds = Besoin::with('association')
-        ->where('status', ['Urgent','Normal'])
+    // Récupérer tous les besoins (urgents et normaux)
+    $allNeeds = Besoin::with('association')
+        ->whereIn('status', ['Urgent', 'Normal'])
         ->orderBy('created_at', 'desc')
-        ->take(3)
         ->get();
 
-    // Récupérer les 3 dons récents
-    $recentDonations = Donation::with('donateur')
+    // Récupérer tous les dons disponibles
+    $allDonations = Donation::with('donateur')
         ->where('statut', 'Disponible')
         ->orderBy('created_at', 'desc')
-        ->take(3)
         ->get();
 
-    return view('association.profilassociation', compact('association', 'urgentNeeds', 'recentDonations'));
-    }
+    // Récupérer les 3 besoins urgents pour l'affichage initial
+    $urgentNeeds = $allNeeds->take(3);
+
+    // Récupérer les 3 dons récents pour l'affichage initial
+    $recentDonations = $allDonations->take(3);
+
+    return view('association.profilassociation', compact(
+        'association',
+        'urgentNeeds',
+        'recentDonations',
+        'allNeeds',
+        'allDonations'
+    ));
+}
 
     public function logout(Request $request)
 {
@@ -125,27 +135,14 @@ public function interesse(Request $request, Donation $donation)
 
 public function indexBesoins()
 {
-    $this->authorize('viewAny', Besoin::class);
-    $association = Auth::guard('association')->user();
-
-    $besoins = Besoin::with('association')
-        ->orderBy('created_at', 'desc')
-        ->paginate(10); // ou ->get() si vous ne voulez pas de pagination
-
-    return view('association.tous_les_besoins', compact('association', 'besoins'));
+    return redirect()->route('association.profil', ['view' => 'besoins']);
 }
 
 public function indexDons()
 {
-
-    $association = Auth::guard('association')->user();
-
-    $dons = Donation::with('donateur')
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
-
-    return view('association.tous_les_dons', compact('association', 'dons'));
+    return redirect()->route('association.profil', ['view' => 'dons']);
 }
+
 public function storeBesoin(Request $request)
 {
     // Validate the request data
