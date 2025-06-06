@@ -54,7 +54,7 @@ class AssociationController extends Controller
 
     // Récupérer les 3 besoins urgents
     $urgentNeeds = Besoin::with('association')
-        ->where('status', 'Urgent')
+        ->where('status', ['Urgent','Normal'])
         ->orderBy('created_at', 'desc')
         ->take(3)
         ->get();
@@ -145,6 +145,30 @@ public function indexDons()
         ->paginate(10);
 
     return view('association.tous_les_dons', compact('association', 'dons'));
+}
+public function storeBesoin(Request $request)
+{
+    // Validate the request data
+    $validated = $request->validate([
+        'titre' => 'required|string|max:100',
+        'description' => 'required|string',
+        'status' => 'required|in:Urgent,Normal',
+    ]);
+
+    // Get the authenticated association
+    $association = Auth::guard('association')->user();
+
+    // Create the new besoin
+    $besoin = Besoin::create([
+        'titre' => $validated['titre'],
+        'description' => $validated['description'],
+        'status' => $validated['status'],
+        'id_association' => $association->id,
+        'date_creation' => now(),
+    ]);
+
+    // Redirect back with success message
+    return redirect()->back()->with('success', 'Votre besoin a été publié avec succès !');
 }
 
 
