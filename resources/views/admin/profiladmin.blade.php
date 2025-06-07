@@ -456,6 +456,130 @@
             background-color: #DDE0E5;
         }
         .action-icon-table.delete::before { content: '🚫'; } /* Banned icon */
+.admin-avatar {
+    width: 120px;
+    height: 120px;
+    background-color: #1E3A8A; /* Couleur bleue */
+    color: white;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border: 4px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    font-weight: bold;
+}
+.logout-link {
+    background-color: #1E3A8A; /* Bleu foncé */
+    color: #E0F2FE; /* Gris ciel clair (tu peux ajuster selon le rendu désiré) */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.activity-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.activity-icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.main-text {
+    font-weight: 500;
+    color: var(--color-text-dark);
+    margin-bottom: 4px;
+}
+
+.sub-text {
+    font-size: 14px;
+    color: var(--color-gray-text);
+    margin-bottom: 2px;
+}
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #E5E7EB;
+}
+
+.activity-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.activity-icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+}
+
+.main-text {
+    font-weight: 500;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.sub-text {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 2px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 60%;
+    max-width: 700px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
 
         /* Responsive Design */
@@ -645,119 +769,114 @@
 <body>
     <header class="header">
         <a href="#" class="logo">SolidarityConnect</a>
-        <a href="#" class="logout-link">Déconnexion</a>
+         <form action="{{ route('admin.logout') }}" method="POST" class="logout-form">
+        @csrf
+        <button type="submit" class="logout-link">Déconnexion</button>
+    </form>
     </header>
 
     <div class="admin-page-wrapper">
-        <div class="admin-left-panel">
-            <div class="admin-avatar">EM</div>
-            <p class="admin-role">Administrateur</p>
-            <div class="admin-info">
-                <h4>Nom Complet :</h4>
-                <p>----------</p>
-                <h4>Email :</h4>
-                <p>----------</p>
-                <h4>Téléphone :</h4>
-                <p>----------</p>
-            </div>
+      <div class="admin-left-panel">
+    <div class="admin-avatar">{{ $initiales }}</div>
+    <p class="admin-role">Administrateur</p>
+    <div class="admin-info">
+        <h4>Nom Complet :</h4>
+        <p>{{ $admin->nom_complet }}</p>
+        <h4>Email :</h4>
+        <p>{{ $admin->email }}</p>
+        <h4>Téléphone :</h4>
+        <p>{{ $admin->telephone ?? 'Non renseigné' }}</p>
+    </div>
 
-        </div>
+</div>
 
         <div class="admin-main-content">
-            <div class="info-cards-grid">
-                <div class="info-card">
-                    <div class="icon users"></div>
-                    <h4>Utilisateurs</h4>
-                    <p>Nombre d'utilisateur</p>
-                </div>
-                <div class="info-card">
-                    <div class="icon associations"></div>
-                    <h4>Associations</h4>
-                    <p>Nombre d'association</p>
-                </div>
-                <div class="info-card">
-                    <div class="icon donations"></div>
-                    <h4>Dons</h4>
-                    <p>Nombre du don</p>
-                </div>
-            </div>
+           <div class="info-cards-grid">
+    <div class="info-card">
+        <div class="icon users"></div>
+        <h4>Utilisateurs</h4>
+        <p>{{ $stats['donateursCount'] }} donateurs</p>
+    </div>
+    <div class="info-card">
+        <div class="icon associations"></div>
+        <h4>Associations</h4>
+        <p>{{ $stats['associationsCount'] }} associations</p>
+    </div>
+    <div class="info-card">
+        <div class="icon donations"></div>
+        <h4>Dons</h4>
+        <p>{{ $stats['donationsCount'] }} dons</p>
+    </div>
+</div>
 
             <div class="middle-sections-grid">
-                <div class="section-box activity-section">
-                    <h3>Activité récente</h3>
-                    <div class="activity-list">
-                        <div class="activity-item">
-                            <div class="activity-avatar"></div>
-                            <div class="activity-details">
-                                <p class="main-text">Donateur a fait un don</p>
-                                <p class="sub-text">Type de don</p>
-                                <p class="sub-text">Date de don</p>
-                            </div>
-                            <div class="activity-icon"></div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-avatar"></div>
-                            <div class="activity-details">
-                                <p class="main-text">Association a ajouté un besoin</p>
-                                <p class="sub-text">Titre du besoins</p>
-                                <p class="sub-text">Date de besoin</p>
-                            </div>
-                            <div class="activity-icon"></div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-avatar"></div>
-                            <div class="activity-details">
-                                <p class="main-text">Donateur a fait un don</p>
-                                <p class="sub-text">Type de don</p>
-                                <p class="sub-text">Date de don</p>
-                            </div>
-                            <div class="activity-icon"></div>
-                        </div>
-                    </div>
+<div class="section-box activity-section">
+    <h3>Activité récente</h3>
+    <div class="activity-list">
+        @forelse($activities as $activity)
+            <div class="activity-item">
+                <div class="activity-avatar" style="background-color: {{ $activity['type'] === 'donation' ? '#06B6D4' : '#1E3A8A' }}; color: white;">
+                    {{ $activity['avatar'] }}
                 </div>
+                <div class="activity-details">
+                    <p class="main-text">{{ $activity['user_name'] }} a
+                        @if($activity['type'] === 'donation')
+                            fait un don
+                        @else
+                            ajouté un besoin
+                        @endif
+                    </p>
+                    <p class="sub-text">{{ $activity['details'] }}</p>
+                    <p class="sub-text">{{ $activity['date'] }}</p>
+                </div>
+                <div class="activity-icon">
+                    @if($activity['type'] === 'donation')
+                        🎁
+                    @else
+                        🏷️
+                    @endif
+                </div>
+            </div>
+        @empty
+            <p>Aucune activité récente</p>
+        @endforelse
+    </div>
+</div>
 
-                <div class="section-box pending-associations-section">
-                    <h3>Associations en attente</h3>
-                    <div class="pending-associations-list">
-                        <div class="pending-association-item">
-                            <div class="pending-association-avatar"></div>
-                            <div class="pending-association-details">
-                                <p>nom d'association</p>
-                                <p class="location">Lieu d'association</p>
-                            </div>
-                            <div class="pending-actions">
-
-                                <div class="action-icon edit"></div>
-                                <div class="action-icon delete"></div>
-                            </div>
-                        </div>
-                        <div class="pending-association-item">
-                            <div class="pending-association-avatar"></div>
-                            <div class="pending-association-details">
-                                <p>nom d'association</p>
-                                <p class="location">Lieu d'association</p>
-                            </div>
-                            <div class="pending-actions">
-
-                                <div class="action-icon edit"></div>
-                                <div class="action-icon delete"></div>
-                            </div>
-                        </div>
-                        <div class="pending-association-item">
-                            <div class="pending-association-avatar"></div>
-                            <div class="pending-association-details">
-                                <p>nom d'association</p>
-                                <p class="location">Lieu d'association</p>
-                            </div>
-                            <div class="pending-actions">
-
-                                <div class="action-icon edit"></div>
-                                <div class="action-icon delete"></div>
-                            </div>
-                        </div>
+               <div class="section-box pending-associations-section">
+    <h3>Associations en attente</h3>
+    <div class="pending-associations-list" id="pendingAssociationsList">
+        @foreach($pendingAssociations as $association)
+            <div class="pending-association-item" data-id="{{ $association['id'] }}">
+                <div class="activity-avatar" style="background-color: #1E3A8A; color: white;">
+                    {{ $association['avatar'] }}
+                </div>
+                <div class="pending-association-details">
+                    <p>{{ $association['nom_complet'] }}</p>
+                    <p class="location">{{ $association['adresse'] }}</p>
+                </div>
+                <div class="pending-actions">
+                    <div class="action-icon edit"
+                         onclick="showAssociationDetails({{ $association['id'] }})">
+                        👁️
+                    </div>
+                    <div class="action-icon delete"
+                         onclick="deleteAssociation({{ $association['id'] }}, this)">
+                        🗑️
                     </div>
                 </div>
             </div>
+        @endforeach
+    </div>
+</div>
+
+            </div>
+            <div id="associationModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="associationDetails"></div>
+    </div>
+</div>
 
             <div class="section-box recent-users-section">
                 <h3>Utilisateurs récents</h3>
@@ -795,4 +914,39 @@
         </div>
     </div>
 </body>
+<script>
+// Afficher les détails
+function showAssociationDetails(id) {
+    fetch(`/admin/associations/${id}`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('associationDetails').innerHTML = html;
+            document.getElementById('associationModal').style.display = 'block';
+        });
+}
+
+// Supprimer une association
+function deleteAssociation(id, element) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette association ?')) {
+        fetch(`/admin/associations/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                element.closest('.pending-association-item').remove();
+            }
+        });
+    }
+}
+
+// Fermer le modal
+function closeModal() {
+    document.getElementById('associationModal').style.display = 'none';
+}
+</script>
 </html>

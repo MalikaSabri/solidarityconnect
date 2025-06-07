@@ -434,17 +434,22 @@ ul {
 
             <h3 class="form-title">Connecter en tant qu'administrateur</h3>
 
-            <form action="{{ route('login') }}" method="POST" class="registration-form">
+            <form  action="{{ route('admin.login.submit') }}" method="POST" class="registration-form">
                 @csrf
                 <div class="form-group">
                     <label for="email">Email *</label>
-                    <input type="email" id="email" name="email" required placeholder=" ">
+                    <input type="email" id="email" name="email" required placeholder=" " value="{{ old('email') }}">
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe *</label>
                     <input type="password" id="password" name="password" required placeholder=" ">
                 </div>
                 <button type="submit" class="btn-inscrire">Inscrire</button>
+                   @if($errors->any())
+        <div class="alert alert-danger">
+            {{ $errors->first() }}
+        </div>
+    @endif
             </form>
         </div>
     </div>

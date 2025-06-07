@@ -39,7 +39,20 @@
         .active{
             margin-top: 40px;
         }
-
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    background-color: var(--color-light-gray-bg);
+    border-radius: 50%;
+    margin-bottom: 30px;
+    border: 4px solid var(--color-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    font-weight: bold;
+    color: var(--color-dark-blue);
+}
         /* Header */
         .header {
             background-color: var(--color-dark-blue);
@@ -414,15 +427,15 @@
 
     <div class="profile-page-wrapper">
         <div class="profile-left-panel">
-            <div class="profile-avatar"></div>
-            <div class="profile-info">
-                <h4>Nom Complet :</h4>
-                <p>----------</p>
-                <h4>Email :</h4>
-                <p>----------</p>
-                <h4>Téléphone :</h4>
-                <p>----------</p>
-            </div>
+           <div class="profile-avatar">{{ $initiales }}</div>
+         <div class="profile-info">
+            <h4>Nom Complet :</h4>
+            <p>{{ $donateur->prenom }} {{ $donateur->nom }}</p>
+            <h4>Email :</h4>
+            <p>{{ $donateur->email }}</p>
+            <h4>Téléphone :</h4>
+            <p>{{ $donateur->telephone }}</p>
+        </div>
             <a href="#" class="btn-faire-don">Faire un don</a>
             <a href="#" class="btn-faire-don active" >L'historique</a>
         </div>

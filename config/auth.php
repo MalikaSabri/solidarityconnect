@@ -44,6 +44,14 @@ return [
         'driver' => 'session',
         'provider' => 'associations',
     ],
+     'donateur' => [
+        'driver' => 'session',
+        'provider' => 'donateurs',
+    ],
+    'admin' => [
+        'driver' => 'session',
+        'provider' => 'admins',
+    ],
     ],
 
     /*
@@ -71,6 +79,14 @@ return [
          'associations' => [
         'driver' => 'eloquent',
         'model' => App\Models\Association::class,
+    ],
+    'donateurs' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Donateur::class,
+    ],
+       'admins' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Admin::class,
     ],
 
         // 'users' => [

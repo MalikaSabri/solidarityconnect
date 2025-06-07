@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssociationController;
-// use App\Http\Controllers\DonateurController;
-// use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DonateurController;
+use App\Http\Controllers\AdminController;
 Route::get('/', function () {
     return view('acceuil');
 });
@@ -64,16 +64,36 @@ Route::get('/login', function () {
     return view('donateur.connecterdonateur');
 })->name('login');
 
-
+// Routes Donateur
+Route::get('/donateur/inscrire', [DonateurController::class, 'showInscriptionForm'])->name('donateur.inscription');
+Route::post('/donateur/inscrire', [DonateurController::class, 'store'])->name('donateur.store');
+Route::get('/donateur/profil', [DonateurController::class, 'showProfil'])->name('donateur.profil')->middleware('auth:donateur');
+Route::post('/donateur/logout', [DonateurController::class, 'logout'])->name('donateur.logout');
 
 // -----------------------
 // Admin
 // -----------------------
-Route::get('/admin/login', function () {
-    return view('admin.connecteradmin');
-});
+// Route::get('/admin/login', function () {
+//     return view('admin.connecteradmin');
+// });
+
+// routes/web.php
+Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.submit');
+Route::get('/admin/profil', [AdminController::class, 'showProfil'])->name('admin.profil')->middleware('auth:admin');
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
 
+
+// Routes pour les associations
+Route::get('/admin/associations/{id}', [AdminController::class, 'showAssociationDetails'])
+     ->name('admin.association.show');
+
+Route::delete('/admin/associations/{id}', [AdminController::class, 'deleteAssociation'])
+     ->name('admin.association.delete');
+
+Route::post('/admin/associations/{id}/validate', [AdminController::class, 'validateAssociation'])
+     ->name('admin.association.validate');
 
 
 // -----------------------

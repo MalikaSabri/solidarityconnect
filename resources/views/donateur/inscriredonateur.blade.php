@@ -430,7 +430,7 @@ ul {
 
             <h3 class="form-title">Inscrire en tant que donateur</h3>
 
-            <form action="" method="POST" class="registration-form">
+            <form action="{{ route('donateur.store') }}" method="POST" class="registration-form">
                 @csrf
                 <div class="form-grid">
                     <div class="form-group">

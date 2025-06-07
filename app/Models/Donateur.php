@@ -16,8 +16,7 @@ class Donateur extends Authenticatable
         'mot_de_passe',
         'telephone',
         'adresse',
-        'date_inscription',
-        'description'
+        'date_inscription'
     ];
 
     protected $hidden = [
@@ -28,10 +27,5 @@ class Donateur extends Authenticatable
     public function getAuthPassword()
     {
         return $this->mot_de_passe;
-    }
-
-    public function donations()
-    {
-        return $this->hasMany(Donation::class, 'id_donateur');
     }
 }

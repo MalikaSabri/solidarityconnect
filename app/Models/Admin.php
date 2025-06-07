@@ -9,6 +9,8 @@ class Admin extends Authenticatable
 {
     use HasFactory;
 
+    protected $table = 'administrateurs'; // Spécifie le nom de la table
+
     protected $fillable = [
         'nom_complet',
         'email',
