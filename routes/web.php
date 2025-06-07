@@ -94,7 +94,12 @@ Route::delete('/admin/associations/{id}', [AdminController::class, 'deleteAssoci
 
 Route::post('/admin/associations/{id}/validate', [AdminController::class, 'validateAssociation'])
      ->name('admin.association.validate');
+// Routes pour la suppression
+Route::delete('/admin/donateurs/{id}', [AdminController::class, 'deleteDonateur'])
+     ->name('admin.donateur.delete');
 
+Route::delete('/admin/associations/{id}', [AdminController::class, 'deleteAssociation'])
+     ->name('admin.association.delete');
 
 // -----------------------
 // Besoin

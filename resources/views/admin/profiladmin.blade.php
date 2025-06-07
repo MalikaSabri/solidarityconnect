@@ -582,6 +582,52 @@
 }
 
 
+.user-avatar-small {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.role-tag {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.role-tag.donateur {
+    background-color: #06B6D4;
+    color: white;
+}
+
+.role-tag.association {
+    background-color: #1E3A8A;
+    color: white;
+}
+
+.action-icon-table {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.action-icon-table:hover {
+    background-color: #E5E7EB;
+}
+
+
         /* Responsive Design */
         @media (max-width: 1200px) {
             .admin-page-wrapper {
@@ -878,39 +924,43 @@
     </div>
 </div>
 
-            <div class="section-box recent-users-section">
-                <h3>Utilisateurs récents</h3>
-                <table class="users-table">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Role</th>
-                            <th>Inscription</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="user-name-cell">
-                                <div class="user-avatar-small"></div>
-                                Nom Complet
-                            </td>
-                            <td><span class="role-tag donateur">Donateur</span></td>
-                            <td>Date Inscription</td>
-                            <td><div class="action-icon-table delete"></div></td>
-                        </tr>
-                        <tr>
-                            <td class="user-name-cell">
-                                <div class="user-avatar-small"></div>
-                                Nom Complet
-                            </td>
-                            <td><span class="role-tag association">Association</span></td>
-                            <td>Date Inscription</td>
-                            <td><div class="action-icon-table delete"></div></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+           <div class="section-box recent-users-section">
+    <h3>Utilisateurs récents</h3>
+    <table class="users-table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Role</th>
+                <th>Inscription</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($recentUsers as $user)
+                <tr>
+                    <td class="user-name-cell">
+                        <div class="user-avatar-small" style="background-color: {{ $user['type'] === 'donateur' ? '#06B6D4' : '#1E3A8A' }};">
+                            {{ $user['avatar'] }}
+                        </div>
+                        {{ $user['nom_complet'] }}
+                    </td>
+                    <td>
+                        <span class="role-tag {{ $user['type'] }}">
+                            {{ $user['type'] === 'donateur' ? 'Donateur' : 'Association' }}
+                        </span>
+                    </td>
+                    <td>{{ $user['date_inscription'] }}</td>
+                    <td>
+                        <div class="action-icon-table delete"
+                             onclick="deleteUser('{{ $user['type'] }}', {{ $user['id'] }}, this)">
+                            🗑️
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
         </div>
     </div>
 </body>
@@ -948,5 +998,30 @@ function deleteAssociation(id, element) {
 function closeModal() {
     document.getElementById('associationModal').style.display = 'none';
 }
+
+
+
+function deleteUser(type, id, element) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
+        const endpoint = type === 'donateur'
+            ? `/admin/donateurs/${id}`
+            : `/admin/associations/${id}`;
+
+        fetch(endpoint, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                element.closest('tr').remove();
+            }
+        });
+    }
+}
+
 </script>
 </html>

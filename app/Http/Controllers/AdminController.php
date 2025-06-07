@@ -111,7 +111,48 @@ public function showProfil()
     // Prendre les 5 plus récentes
     $activities = array_slice($activities, 0, 5);
 
-    return view('admin.profiladmin', compact('admin', 'initiales', 'stats', 'activities', 'pendingAssociations'));
+      // Récupérer les utilisateurs récents (donateurs + associations)
+    $recentDonateurs = Donateur::latest()
+        ->take(5)
+        ->get()
+        ->map(function ($donateur) {
+            return [
+                'type' => 'donateur',
+                'nom_complet' => $donateur->prenom . ' ' . $donateur->nom,
+                'date_inscription' => $donateur->created_at->format('d/m/Y'),
+                'id' => $donateur->id,
+                'avatar' => strtoupper(substr($donateur->prenom, 0, 1) . substr($donateur->nom, 0, 1))
+            ];
+        });
+
+    $recentAssociations = Association::latest()
+        ->take(5)
+        ->get()
+        ->map(function ($association) {
+            return [
+                'type' => 'association',
+                'nom_complet' => $association->nom_complet,
+                'date_inscription' => $association->created_at->format('d/m/Y'),
+                'id' => $association->id,
+                'avatar' => strtoupper(substr($association->nom_complet, 0, 2))
+            ];
+        });
+
+    // Fusionner et trier par date
+    $recentUsers = $recentDonateurs->merge($recentAssociations)
+        ->sortByDesc('date_inscription')
+        ->take(5);
+
+    return view('admin.profiladmin', compact(
+        'admin',
+        'initiales',
+        'stats',
+        'activities',
+        'pendingAssociations',
+        'recentUsers'
+    ));
+
+    return view('admin.profiladmin', compact('admin', 'initiales', 'stats', 'activities', 'pendingAssociations', 'recentUsers','recentAssociations','recentDonateurs'));
 }
 
     public function logout(Request $request)
@@ -166,6 +207,21 @@ public function deleteAssociation($id)
     $association->delete();
 
     return response()->json(['success' => true]);
+     try {
+        Association::findOrFail($id)->delete();
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false], 500);
+    }
+}
+public function deleteDonateur($id)
+{
+    try {
+        Donateur::findOrFail($id)->delete();
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false], 500);
+    }
 }
 
 }
