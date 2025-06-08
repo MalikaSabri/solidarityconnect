@@ -39,19 +39,20 @@
         .active{
             margin-top: 40px;
         }
+
 .profile-avatar {
     width: 120px;
     height: 120px;
-    background-color: var(--color-light-gray-bg);
+    background-color: #06B6D4; /* Couleur bleue pour donateurs */
+    color: white;
     border-radius: 50%;
-    margin-bottom: 30px;
-    border: 4px solid var(--color-white);
+    margin-bottom: 20px;
+    border: 4px solid white;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 48px;
     font-weight: bold;
-    color: var(--color-dark-blue);
 }
         /* Header */
         .header {
@@ -426,19 +427,24 @@
     </header>
 
     <div class="profile-page-wrapper">
-        <div class="profile-left-panel">
-           <div class="profile-avatar">{{ $initiales }}</div>
-         <div class="profile-info">
-            <h4>Nom Complet :</h4>
-            <p>{{ $donateur->prenom }} {{ $donateur->nom }}</p>
-            <h4>Email :</h4>
-            <p>{{ $donateur->email }}</p>
-            <h4>Téléphone :</h4>
-            <p>{{ $donateur->telephone }}</p>
-        </div>
-            <a href="#" class="btn-faire-don">Faire un don</a>
-            <a href="#" class="btn-faire-don active" >L'historique</a>
-        </div>
+      <div class="profile-left-panel">
+    <div class="profile-avatar">{{ $initiales }}</div>
+    <div class="profile-info">
+        <h4>Nom Complet :</h4>
+        <p>{{ $donateur->prenom }} {{ $donateur->nom }}</p>
+        <h4>Email :</h4>
+        <p>{{ $donateur->email }}</p>
+        <h4>Téléphone :</h4>
+        <p>{{ $donateur->telephone }}</p>
+        <h4>Adresse :</h4>
+        <p>{{ $donateur->adresse }}</p>
+    </div>
+    <form action="{{ route('donateur.logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="btn-faire-don">Déconnexion</button>
+    </form>
+    <a href="#" class="btn-faire-don active">L'historique</a>
+</div>
 
         <div class="profile-main-content">
             <section class="urgent-needs-section">

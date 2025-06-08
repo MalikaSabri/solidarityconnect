@@ -46,11 +46,17 @@ public function store(Request $request)
     }
 }
 
-    public function showProfil()
-    {
-        $donateur = Auth::guard('donateur')->user();
-        return view('donateur.profildonateur', compact('donateur'));
+public function showProfil()
+{
+    if (!Auth::guard('donateur')->check()) {
+        return redirect('/connecter');
     }
+
+    $donateur = Auth::guard('donateur')->user();
+    $initiales = strtoupper(substr($donateur->prenom, 0, 1) . substr($donateur->nom, 0, 1));
+
+    return view('donateur.profildonateur', compact('donateur', 'initiales'));
+}
 
     public function logout(Request $request)
     {

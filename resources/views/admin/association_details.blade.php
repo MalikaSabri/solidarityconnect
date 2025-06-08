@@ -70,11 +70,7 @@
         <p class="value">{{ $association->description }}</p>
     </div>
 
-    <div class="actions">
-        <button onclick="validateAssociation({{ $association->id }})" class="btn-validate">
-            Valider l'association
-        </button>
-    </div>
+
 </div>
 
 

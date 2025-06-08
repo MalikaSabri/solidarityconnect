@@ -67,7 +67,7 @@ Route::get('/login', function () {
 // Routes Donateur
 Route::get('/donateur/inscrire', [DonateurController::class, 'showInscriptionForm'])->name('donateur.inscription');
 Route::post('/donateur/inscrire', [DonateurController::class, 'store'])->name('donateur.store');
-Route::get('/donateur/profil', [DonateurController::class, 'showProfil'])->name('donateur.profil')->middleware('auth:donateur');
+Route::get('/donateur/profil', [DonateurController::class, 'showProfil'])->name('donateur.profil');
 Route::post('/donateur/logout', [DonateurController::class, 'logout'])->name('donateur.logout');
 
 // -----------------------

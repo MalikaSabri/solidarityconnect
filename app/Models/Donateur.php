@@ -16,7 +16,6 @@ class Donateur extends Authenticatable
         'mot_de_passe',
         'telephone',
         'adresse',
-        'date_inscription'
     ];
 
     protected $hidden = [

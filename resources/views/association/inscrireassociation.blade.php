@@ -431,7 +431,7 @@ ul {
                 <a href="{{ url('/donateur/inscrire') }}" class="tab-button tab-donateur ">donateur</a>
             </div>
 
-            <h3 class="form-title">Inscrire en tant qu'asoociation</h3>
+            <h3 class="form-title">Inscrire en tant qu'association</h3>
 
             <form action="{{ route('association.store') }}" method="POST" class="registration-form">
                 @csrf
@@ -462,7 +462,7 @@ ul {
                     </div>
                 </div>
                 <button type="submit" class="btn-inscrire">Inscrire</button>
-                
+
             </form>
         </div>
     </div>

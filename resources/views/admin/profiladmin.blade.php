@@ -890,7 +890,7 @@
 </div>
 
                <div class="section-box pending-associations-section">
-    <h3>Associations en attente</h3>
+    <h3>Associations à gerer</h3>
     <div class="pending-associations-list" id="pendingAssociationsList">
         @foreach($pendingAssociations as $association)
             <div class="pending-association-item" data-id="{{ $association['id'] }}">
@@ -993,14 +993,10 @@ function deleteAssociation(id, element) {
         });
     }
 }
-
 // Fermer le modal
 function closeModal() {
     document.getElementById('associationModal').style.display = 'none';
 }
-
-
-
 function deleteUser(type, id, element) {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
         const endpoint = type === 'donateur'
