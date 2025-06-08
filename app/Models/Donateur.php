@@ -10,19 +10,10 @@ class Donateur extends Authenticatable
     use HasFactory;
 
     protected $fillable = [
-        'nom',
-        'prenom',
-        'email',
-        'mot_de_passe',
-        'telephone',
-        'adresse',
-        'date_inscription'
+        'nom', 'prenom', 'email', 'mot_de_passe', 'telephone', 'adresse', 'date_inscription', 'description'
     ];
 
-    protected $hidden = [
-        'mot_de_passe',
-        'remember_token',
-    ];
+    protected $hidden = ['mot_de_passe', 'remember_token'];
 
     public function getAuthPassword()
     {

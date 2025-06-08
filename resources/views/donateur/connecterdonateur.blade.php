@@ -436,15 +436,15 @@ ul {
 
             <h3 class="form-title">Connecter en tant que donateur</h3>
 
-            <form action="{{ route('login') }}" method="POST" class="registration-form">
+            <form action="{{ route('donateur.login') }}" method="POST" class="registration-form">
                 @csrf
                 <div class="form-group">
                     <label for="email">Email *</label>
                     <input type="email" id="email" name="email" required placeholder=" ">
                 </div>
                 <div class="form-group">
-                    <label for="password">Mot de passe *</label>
-                    <input type="password" id="password" name="password" required placeholder=" ">
+                    <label for="mot_de_passe">Mot de passe *</label>
+                    <input type="password" id="password" name="mot_de_passe" required placeholder=" ">
                 </div>
                 <button type="submit" class="btn-inscrire">Inscrire</button>
             </form>

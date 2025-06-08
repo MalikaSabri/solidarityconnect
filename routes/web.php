@@ -57,18 +57,23 @@ Route::get('/association/dons', [AssociationController::class, 'indexDons'])
 // -----------------------
 // Donateur
 // -----------------------
-Route::get('/donateur/inscrire', function () {
-    return view('donateur.inscriredonateur');
-});
-Route::get('/login', function () {
-    return view('donateur.connecterdonateur');
-})->name('login');
+// Route::get('/donateur/inscrire', function () {
+//     return view('donateur.inscriredonateur');
+// });
+// Route::get('/login', function () {
+//     return view('donateur.connecterdonateur');
+// })->name('login');
 
 // Routes Donateur
-Route::get('/donateur/inscrire', [DonateurController::class, 'showInscriptionForm'])->name('donateur.inscription');
-Route::post('/donateur/inscrire', [DonateurController::class, 'store'])->name('donateur.store');
+Route::get('/donateur/inscrire', [DonateurController::class, 'showInscriptionForm'])->name('donateur.inscrire');
+Route::post('/donateur/store', [DonateurController::class, 'store'])->name('donateur.store');
+
+Route::get('/login', [DonateurController::class, 'showConnexionForm'])->name('donateur.loginform');
+Route::post('/donateur/login', [DonateurController::class, 'login'])->name('donateur.login');
+
 Route::get('/donateur/profil', [DonateurController::class, 'showProfil'])->name('donateur.profil');
 Route::post('/donateur/logout', [DonateurController::class, 'logout'])->name('donateur.logout');
+
 
 // -----------------------
 // Admin
@@ -110,6 +115,13 @@ Route::get('/association/besoin/create', function() {
     }
     return view('association.formbesoin', ['association' => auth()->guard('association')->user()]);
 })->name('association.besoin.create');
+
+// Pour satisfaire un besoin
+Route::post('/besoin/satisfaction/{id}', [DonateurController::class, 'satisfaireBesoin'])->name('besoin.satisfaction');
+
+// Formulaire après satisfaction
+Route::get('/donateur/formdon/{besoin}', [DonateurController::class, 'showFormDon'])
+    ->name('donateur.formdon');
 
 
 

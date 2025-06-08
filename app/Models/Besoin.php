@@ -25,4 +25,9 @@ class Besoin extends Model
     {
         return $this->hasMany(DonAttribue::class, 'id_besoin');
     }
+    public function donateur()
+{
+    return $this->belongsTo(Donateur::class, 'id_donateur');
+}
+
 }

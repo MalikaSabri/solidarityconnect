@@ -54,6 +54,37 @@
     font-size: 48px;
     font-weight: bold;
 }
+/* Dans ton fichier CSS */
+.status-tag {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-tag.urgent {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.status-tag.normal {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+.satisfy-btn {
+    background-color: #1E3A8A;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.satisfy-btn:hover {
+    background-color: #388E3C;
+}
         /* Header */
         .header {
             background-color: var(--color-dark-blue);
@@ -423,7 +454,10 @@
 <body>
     <header class="header">
         <a href="#" class="logo">SolidarityConnect</a>
-        <a href="#" class="logout-link">Déconnexion</a>
+         <form action="{{ route('donateur.logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="btn-faire-don">Déconnexion</button>
+    </form>
     </header>
 
     <div class="profile-page-wrapper">
@@ -439,58 +473,43 @@
         <h4>Adresse :</h4>
         <p>{{ $donateur->adresse }}</p>
     </div>
-    <form action="{{ route('donateur.logout') }}" method="POST">
-        @csrf
-        <button type="submit" class="btn-faire-don">Déconnexion</button>
-    </form>
+    <a href="#" class="btn-faire-don active">Faire un don </a>
     <a href="#" class="btn-faire-don active">L'historique</a>
+
 </div>
 
         <div class="profile-main-content">
-            <section class="urgent-needs-section">
-                <div class="section-header">
-                    <h3>Besoins Urgents</h3>
-                    <a href="#" class="view-all-link">Voir tous les besoins</a>
-                </div>
-                <div class="cards-container">
-                    <div class="card need-card">
-                        <div class="card-header">
-                            <h4 class="card-title">Titre du besoin</h4>
-                            <a href="" class="status-tag">satisfaction</a>
-                        </div>
-                        <p class="card-association-name">Nom de l'association</p>
-                        <p class="card-description">description du besoin</p>
-                        <div class="card-footer">
-                            <span class="location-info">Adresse de l'association</span>
-                            <span class="info-tag">Satus du besion</span>
-                        </div>
-                    </div>
-                    <div class="card need-card">
-                        <div class="card-header">
-                            <h4 class="card-title">Titre du besoin</h4>
-                            <a href="" class="status-tag">satisfaction</a>
-                        </div>
-                        <p class="card-association-name">Nom de l'association</p>
-                        <p class="card-description">description du besoin</p>
-                        <div class="card-footer">
-                            <span class="location-info">Adresse de l'association</span>
-                            <span class="info-tag">Satus du besion</span>
-                        </div>
-                    </div>
-                    <div class="card need-card">
-                        <div class="card-header">
-                            <h4 class="card-title">Titre du besoin</h4>
-                            <a href="" class="status-tag">satisfaction</a>
-                        </div>
-                        <p class="card-association-name">Nom de l'association</p>
-                        <p class="card-description">description du besoin</p>
-                        <div class="card-footer">
-                            <span class="location-info">Adresse de l'association</span>
-                            <span class="info-tag">Satus du besion</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
+<section class="urgent-needs-section">
+    <div class="section-header">
+        <h3>Besoins Disponibles</h3> <!-- Changé le titre -->
+        <a href="#" class="view-all-link">Voir tous les besoins</a>
+    </div>
+    <div class="cards-container">
+        @foreach($besoins as $besoin)
+        <div class="card need-card">
+            <div class="card-header">
+                <h4 class="card-title">{{ $besoin->titre }}</h4>
+                <span class="status-tag {{ $besoin->status === 'Urgent' ? 'urgent' : 'normal' }}">
+                    {{ $besoin->status }}
+                </span>
+            </div>
+            <p class="card-association-name">{{ $besoin->association->nom }}</p>
+            <p class="card-description">{{ Str::limit($besoin->description, 100) }}</p>
+            <div class="card-footer">
+                <span class="location-info">
+                    <i class="fas fa-map-marker-alt"></i> {{ $besoin->association->adresse }}
+                </span>
+                <form method="POST" action="{{ route('besoin.satisfaction', $besoin->id) }}">
+                    @csrf
+                    <button type="submit" class="satisfy-btn">
+                        Satisfaire
+                    </button>
+                </form>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</section>
 
             <section class="recent-donations-section">
                 <div class="section-header">
