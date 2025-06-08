@@ -20,7 +20,7 @@ public function store(Request $request)
         'nom' => 'required|string|max:50',
         'prenom' => 'required|string|max:50',
         'email' => 'required|email|unique:donateurs,email',
-        'password' => 'required|min:8',
+        'mot_de_passe' => 'required|min:8',
         'telephone' => 'required|string|max:20',
         'adresse' => 'required|string',
     ]);
@@ -30,7 +30,7 @@ public function store(Request $request)
             'nom' => $validated['nom'],
             'prenom' => $validated['prenom'],
             'email' => $validated['email'],
-            'mot_de_passe' => Hash::make($validated['password']),
+            'mot_de_passe' => Hash::make($validated['mot_de_passe']),
             'telephone' => $validated['telephone'],
             'adresse' => $validated['adresse'],
             'date_inscription' => now(),
