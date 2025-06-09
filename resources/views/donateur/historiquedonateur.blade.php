@@ -240,6 +240,62 @@
             margin-left: 8px; /* Space between text and number */
             flex-shrink: 0; /* Prevent shrinking */
         }
+        .profile-avatar {
+    width: 120px;
+    height: 120px;
+    background-color: #06B6D4; /* Couleur bleue pour donateurs */
+    color:#1E3A8A;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border: 4px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    font-weight: bold;
+}
+      .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background-color: var(--color-light-gray-bg); /* Placeholder for avatar */
+            border-radius: 50%;
+            margin-bottom: 30px;
+            border: 4px solid var(--color-white); /* White border around avatar */
+        }
+
+                .btn-retour {
+            display: inline-block;
+            background-color: var(--color-white);
+            color: var(--color-dark-blue);
+            padding: 14px 40px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            width: 80%;
+            text-align: center;
+            margin-top: auto; /* Push to bottom */
+        }
+
+        .btn-retour:hover {
+            background-color: #f0f0f0;
+            color: var(--color-dark-blue);
+        }
+
+                .header .logout-link {
+            color: var(--color-white);
+            font-weight: 500;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            background-color: #1E3A8A;
+            box-shadow: none;
+            border: none;
+        }
+
+        .header .logout-link:hover {
+            opacity: 1;
+        }
+
 
         /* Responsive Design */
         @media (max-width: 1200px) {
@@ -385,22 +441,24 @@
 <body>
     <header class="header">
         <a href="#" class="logo">SolidarityConnect</a>
-        <a href="#" class="logout-link">Déconnexion</a>
+       <form action="{{ route('donateur.logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="logout-link">Déconnexion</button>
+    </form>
     </header>
 
     <div class="page-wrapper">
-        <div class="left-panel">
-            <div class="profile-avatar"></div>
+          <div class="left-panel">
+         <div class="profile-avatar">{{ $initiales }}</div>
             <div class="profile-info">
                 <h4>Nom Complet :</h4>
-                <p>----------</p>
+                <p>{{ $donateur->prenom }} {{ $donateur->nom }}</p>
                 <h4>Email :</h4>
-                <p>----------</p>
+                <p>{{ $donateur->email }}</p>
                 <h4>Téléphone :</h4>
-                <p>----------</p>
+                <p>{{ $donateur->telephone ?? 'Non renseigné' }}</p>
             </div>
-            <a href="#" class="btn-panel first">Retour</a>
-            <a href="#" class="btn-panel">L'historique</a>
+            <a href="{{ route('donateur.profil') }}" class="btn-retour">Retour</a>
         </div>
 
         <div class="main-content">
@@ -413,32 +471,26 @@
                         <th>Association interesse</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>titre du don</td>
-                        <td>type du don</td>
-                        <td>status du don</td>
-                        <td>
-                            <a href="#" class="table-button">Voir tous <span class="notification-number">1</span></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>titre du don</td>
-                        <td>type du don</td>
-                        <td>status du don</td>
-                        <td>
-                            <a href="#" class="table-button">Voir tous <span class="notification-number">5</span></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>titre du don</td>
-                        <td>type du don</td>
-                        <td>status du don</td>
-                        <td>
-                            <a href="#" class="table-button">Voir tous <span class="notification-number">2</span></a>
-                        </td>
-                    </tr>
-                </tbody>
+            <tbody>
+    @forelse($dons as $don)
+    <tr>
+        <td>{{ $don->titre }}</td>
+        <td>{{ $don->type }}</td>
+        <td>{{ $don->statut }}</td>
+        <td>
+            <a href="{{ route('don.association.interessees', ['donation' => $don->id]) }}" class="table-button">
+    Voir tous <span class="notification-number">{{ $don->interesses_count }}</span>
+</a>
+
+        </td>
+    </tr>
+    @empty
+    <tr>
+        <td colspan="4">Aucun don effectué</td>
+    </tr>
+    @endforelse
+</tbody>
+
             </table>
         </div>
     </div>

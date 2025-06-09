@@ -140,6 +140,11 @@ Route::get('/donateur/formdon', [DonController::class, 'create'])
 Route::post('/donateur/formdon', [DonController::class, 'store'])
     ->name('don.store')
     ->middleware('auth:donateur');
+    Route::get('/donateur/historique', [DonateurController::class, 'historique'])->name('don.historique');
+
+Route::get('/don/associations/{donation}', [DonController::class, 'voirAssociationsInteressees'])->name('don.association.interessees');
+
+Route::post('/don/accorder', [DonController::class, 'accorderDon'])->name('don.accorder');
 
 
 

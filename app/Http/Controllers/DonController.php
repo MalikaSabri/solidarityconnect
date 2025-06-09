@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Http\Request;
 use App\Models\Donation;
 use App\Models\Besoin;
-use Illuminate\Http\Request;
+use App\Models\Interesse;
+use App\Models\Association;
 use Illuminate\Support\Facades\Auth;
 
 class DonController extends Controller
@@ -66,5 +67,48 @@ public function showForm()
 
     return redirect()->route('donateur.profil')->with('success', 'Votre don a été publié avec succès.');
 }
+
+public function voirAssociationsInteressees($donationId)
+{
+    $donateur = Auth::guard('donateur')->user();
+    $initiales = strtoupper(substr($donateur->prenom, 0, 1) . substr($donateur->nom, 0, 1));
+
+    $donation = Donation::where('id', $donationId)
+        ->where('id_donateur', $donateur->id)
+        ->firstOrFail();
+
+    $associations = Association::whereHas('interesses', function ($q) use ($donationId) {
+        $q->where('id_donation', $donationId)->where('interesse', true);
+    })->get();
+
+    return view('donateur.accorderassociation', compact('donation', 'associations', 'donateur', 'initiales'));
+}
+
+public function accorderDon(Request $request)
+{
+    $request->validate([
+        'donation_id' => 'required|exists:donations,id',
+        'association_id' => 'required|exists:associations,id',
+    ]);
+
+    $donation = Donation::where('id', $request->donation_id)
+        ->where('id_donateur', Auth::guard('donateur')->id())
+        ->firstOrFail();
+
+    // Enregistrer l'association choisie dans la table `donations`
+    $donation->id_association = $request->association_id;
+    $donation->save();
+
+    return redirect()->route('don.historique')->with('success', 'Don accordé avec succès.');
+}
+
+    public function logout(Request $request)
+    {
+        Auth::guard('donateur')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
+    }
+
 
 }

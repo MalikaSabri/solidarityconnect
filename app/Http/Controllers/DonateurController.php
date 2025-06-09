@@ -133,6 +133,19 @@ public function profile()
 
     return view('donateur.profile', compact('donateur', 'dons'));
 }
+public function historique()
+{
+    $donateur = Auth::guard('donateur')->user();
+    $initiales = strtoupper(substr($donateur->prenom, 0, 1) . substr($donateur->nom, 0, 1));
+
+    $dons = Donation::where('id_donateur', $donateur->id)
+        ->withCount(['interesses' => function ($query) {
+            $query->where('interesse', true);
+        }])
+        ->get();
+
+    return view('donateur.historiquedonateur', compact('donateur', 'dons', 'initiales'));
+}
 
 
 }

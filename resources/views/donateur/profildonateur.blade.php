@@ -207,7 +207,7 @@
             color: var(--color-white);
         }
 
-        .header .logout-link {
+        .header .logout-link{
             color: var(--color-white);
             font-weight: 500;
             opacity: 0.8;
@@ -289,6 +289,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
             width: 80%; /* Adjusted width */
             text-align: center;
+            margin-bottom: 15px;
         }
 
         .btn-faire-don:hover {
@@ -597,7 +598,7 @@
 
    <a href="{{ route('donateur.formdon') }}" class="btn-faire-don">Faire un don</a>
 
-    {{-- <a href="{{ route('don.historique') }}" class="btn-faire-don">L'historique</a> --}}
+    <a href="{{ route('don.historique') }}" class="btn-faire-don">L'historique</a>
 
 
 

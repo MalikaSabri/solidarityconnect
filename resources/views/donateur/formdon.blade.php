@@ -452,6 +452,20 @@
             margin-bottom: 30px;
             border: 4px solid var(--color-white); /* White border around avatar */
         }
+
+            .header .logout-link{
+            color: var(--color-white);
+            font-weight: 500;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            background-color: #1E3A8A;
+            box-shadow: none;
+            border: none;
+        }
+
+        .header .logout-link:hover {
+            opacity: 1;
+        }
         /* Responsive Design */
         @media (max-width: 1200px) {
             .page-wrapper {
@@ -609,7 +623,10 @@
 <body>
     <header class="header">
         <a href="#" class="logo">SolidarityConnect</a>
-        <a href="#" class="logout-link">Déconnexion</a>
+            <form action="{{ route('donateur.logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="logout-link">Déconnexion</button>
+    </form>
     </header>
 
     <div class="page-wrapper">
