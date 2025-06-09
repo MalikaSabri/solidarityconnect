@@ -44,7 +44,7 @@
     width: 120px;
     height: 120px;
     background-color: #06B6D4; /* Couleur bleue pour donateurs */
-    color: white;
+    color: #1E3A8A;
     border-radius: 50%;
     margin-bottom: 20px;
     border: 4px solid white;
@@ -85,6 +85,110 @@
 .satisfy-btn:hover {
     background-color: #388E3C;
 }
+
+
+/* Style pour le sélecteur */
+.view-selector {
+    margin-left: auto;
+}
+
+.content-select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: white;
+    cursor: pointer;
+}
+
+/* Styles spécifiques pour les cartes */
+.card {
+    transition: all 0.3s ease;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+/* Bouton Satisfaire */
+.satisfy-btn {
+    background-color: #1E3A8A;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.satisfy-btn:hover {
+    background-color: #388E3C;
+}
+
+/* Bouton Détails */
+.details-btn {
+    background-color: #2196F3;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.details-btn:hover {
+    background-color: #0d8bf2;
+}
+
+/* Styles pour les différents statuts */
+.status-tag {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-tag.urgent {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.status-tag.normal {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+.status-tag.delivered {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+.status-tag.pending {
+    background-color: #fff8e1;
+    color: #ffa000;
+}
+
+/* Styles pour les cartes de dons */
+.donation-card {
+    border-left: 4px solid #2196F3;
+}
+
+.card-type {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+  .logout-form button {
+        background:#1E3A8A ;
+        border: none;
+        color: var(--color-white);
+        font-weight: 500;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+        cursor: pointer;
+        font-family: 'Roboto', sans-serif;
+        font-size: inherit;
+        padding: 0;
+    }
         /* Header */
         .header {
             background-color: var(--color-dark-blue);
@@ -94,6 +198,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+
         }
 
         .header .logo {
@@ -107,6 +212,9 @@
             font-weight: 500;
             opacity: 0.8;
             transition: opacity 0.3s ease;
+            background-color: #1E3A8A;
+            box-shadow: none;
+            border: none;
         }
 
         .header .logout-link:hover {
@@ -326,7 +434,19 @@
             top: 20px;
             right: 20px;
         }
-
+.content-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: var(--color-light-blue-input);
+    color: var(--color-dark-blue-text);
+    padding: 8px 35px 8px 15px;
+    border: 1px solid var(--color-dark-blue);
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+}
 
         /* Responsive Design */
         @media (max-width: 1200px) {
@@ -456,7 +576,7 @@
         <a href="#" class="logo">SolidarityConnect</a>
          <form action="{{ route('donateur.logout') }}" method="POST">
         @csrf
-        <button type="submit" class="btn-faire-don">Déconnexion</button>
+        <button type="submit" class="logout-link">Déconnexion</button>
     </form>
     </header>
 
@@ -473,19 +593,32 @@
         <h4>Adresse :</h4>
         <p>{{ $donateur->adresse }}</p>
     </div>
-    <a href="#" class="btn-faire-don active">Faire un don </a>
-    <a href="#" class="btn-faire-don active">L'historique</a>
+
+
+   <a href="{{ route('donateur.formdon') }}" class="btn-faire-don">Faire un don</a>
+
+    {{-- <a href="{{ route('don.historique') }}" class="btn-faire-don">L'historique</a> --}}
+
+
 
 </div>
+<!-- ... (contenu existant avant la section) ... -->
 
-        <div class="profile-main-content">
-<section class="urgent-needs-section">
-    <div class="section-header">
-        <h3>Besoins Disponibles</h3> <!-- Changé le titre -->
-        <a href="#" class="view-all-link">Voir tous les besoins</a>
+<div class="profile-main-content">
+    <section class="content-section">
+      <div class="section-header">
+    <h3 id="section-title">{{ $currentView === 'besoins' ? 'Besoins Disponibles' : 'Mes Dons' }}</h3>
+    <div class="view-selector">
+        <select id="content-selector" class="content-select">
+            <option value="besoins" {{ $currentView === 'besoins' ? 'selected' : '' }}>Voir les besoins</option>
+            <option value="dons" {{ $currentView === 'dons' ? 'selected' : '' }}>Voir mes dons</option>
+        </select>
     </div>
-    <div class="cards-container">
-        @foreach($besoins as $besoin)
+</div>
+
+        <!-- Conteneur pour les besoins -->
+    <div class="cards-container" id="besoins-container" style="{{ $currentView !== 'besoins' ? 'display: none;' : '' }}">
+    @forelse($besoins as $besoin)
         <div class="card need-card">
             <div class="card-header">
                 <h4 class="card-title">{{ $besoin->titre }}</h4>
@@ -496,60 +629,70 @@
             <p class="card-association-name">{{ $besoin->association->nom }}</p>
             <p class="card-description">{{ Str::limit($besoin->description, 100) }}</p>
             <div class="card-footer">
-                <span class="location-info">
-                    <i class="fas fa-map-marker-alt"></i> {{ $besoin->association->adresse }}
-                </span>
+                <span class="location-info">{{ $besoin->association->adresse }}</span>
                 <form method="POST" action="{{ route('besoin.satisfaction', $besoin->id) }}">
                     @csrf
-                    <button type="submit" class="satisfy-btn">
-                        Satisfaire
-                    </button>
+                    <button type="submit" class="satisfy-btn">Satisfaire</button>
                 </form>
             </div>
         </div>
-        @endforeach
-    </div>
-</section>
-
-            <section class="recent-donations-section">
-                <div class="section-header">
-                    <h3>Dons Récents</h3>
-                    <a href="#" class="view-all-link">Voir tous les dons</a>
-                </div>
-                <div class="cards-container">
-                    <div class="card donation-card">
-                        <span class="status-tag">Status don</span>
-                        <div class="card-image-placeholder">Image du don</div>
-                        <h4 class="card-title">Titre du don</h4>
-                        <p class="card-description">Description du don</p>
-                        <div class="card-footer">
-                            <span class="location-info">Localisation du don</span>
-                            <span class="info-tag">Type de don</span>
-                        </div>
-                    </div>
-                    <div class="card donation-card">
-                        <span class="status-tag">Status don</span>
-                        <div class="card-image-placeholder">Image du don</div>
-                        <h4 class="card-title">Titre du don</h4>
-                        <p class="card-description">Description du don</p>
-                        <div class="card-footer">
-                            <span class="location-info">Localisation du don</span>
-                            <span class="info-tag">Type de don</span>
-                        </div>
-                    </div>
-                    <div class="card donation-card">
-                        <span class="status-tag">Status don</span>
-                        <div class="card-image-placeholder">Image du don</div>
-                        <h4 class="card-title">Titre du don</h4>
-                        <p class="card-description">Description du don</p>
-                        <div class="card-footer">
-                            <span class="location-info">Localisation du don</span>
-                            <span class="info-tag">Type de don</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
+    @empty
+        <div class="no-results">
+            <p>Aucun besoin disponible</p>
         </div>
+    @endforelse
+</div>
+
+        <!-- Conteneur pour les dons -->
+  <div class="cards-container" id="dons-container" style="{{ $currentView !== 'dons' ? 'display: none;' : '' }}">
+    @forelse($dons as $don)
+        <div class="card donation-card">
+            <div class="card-header">
+                <h4 class="card-title">{{ $don->titre }}</h4>
+                <span class="status-tag {{ $don->statut === 'Donné' ? 'delivered' : 'pending' }}">
+                    {{ $don->statut }}
+                </span>
+            </div>
+            <p class="card-type">Type: {{ $don->type }}</p>
+            <p class="card-description">{{ Str::limit($don->description, 100) }}</p>
+            <div class="card-footer">
+                <span class="date-info">Disponible le: {{ $don->date_disponible->format('d/m/Y') }}</span>
+                <a href="#" class="details-btn">Détails</a>
+            </div>
+        </div>
+    @empty
+        <div class="no-results">
+            <p>Vous n'avez fait aucun don</p>
+        </div>
+    @endforelse
+</div>
+    </section>
+</div>
+
+<!-- ... (contenu existant après la section) ... -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const contentSelector = document.getElementById('content-selector');
+    const besoinsContainer = document.getElementById('besoins-container');
+    const donsContainer = document.getElementById('dons-container');
+    const sectionTitle = document.getElementById('section-title');
+
+    contentSelector.addEventListener('change', function() {
+        if (this.value === 'besoins') {
+            besoinsContainer.style.display = 'grid';
+            donsContainer.style.display = 'none';
+            sectionTitle.textContent = 'Besoins Disponibles';
+            history.pushState(null, '', '?view=besoins');
+        } else {
+            besoinsContainer.style.display = 'none';
+            donsContainer.style.display = 'grid';
+            sectionTitle.textContent = 'Mes Dons';
+            history.pushState(null, '', '?view=dons');
+        }
+    });
+});
+</script>
     </div>
 </body>
 </html>

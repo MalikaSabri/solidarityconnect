@@ -20,6 +20,11 @@ class Donation extends Model
         'statut',
         'id_donateur',
     ];
+    protected $casts = [
+    'date_disponible' => 'date',
+    'heure_disponible' => 'datetime:H:i',
+];
+
 
     public function donateur()
     {

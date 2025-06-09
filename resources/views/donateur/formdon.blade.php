@@ -426,7 +426,32 @@
         .form-navigation .btn-publish:hover {
             background-color: #059FB9; /* Darker teal */
         }
-
+.type-option.selected {
+    border: 2px solid #007BFF;
+    background-color: #f0f8ff;
+}
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    background-color: #06B6D4; /* Couleur bleue pour donateurs */
+    color:#1E3A8A;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border: 4px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    font-weight: bold;
+}
+      .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background-color: var(--color-light-gray-bg); /* Placeholder for avatar */
+            border-radius: 50%;
+            margin-bottom: 30px;
+            border: 4px solid var(--color-white); /* White border around avatar */
+        }
         /* Responsive Design */
         @media (max-width: 1200px) {
             .page-wrapper {
@@ -589,19 +614,20 @@
 
     <div class="page-wrapper">
         <div class="left-panel">
-            <div class="profile-avatar"></div>
+         <div class="profile-avatar">{{ $initiales }}</div>
             <div class="profile-info">
                 <h4>Nom Complet :</h4>
-                <p>----------</p>
+                <p>{{ $donateur->prenom }} {{ $donateur->nom }}</p>
                 <h4>Email :</h4>
-                <p>----------</p>
+                <p>{{ $donateur->email }}</p>
                 <h4>Téléphone :</h4>
-                <p>----------</p>
+                <p>{{ $donateur->telephone ?? 'Non renseigné' }}</p>
             </div>
-            <a href="#" class="btn-retour">Retour</a>
+            <a href="{{ route('donateur.profil') }}" class="btn-retour">Retour</a>
         </div>
 
         <div class="form-main-container">
+
             <div class="form-header">
                 <h3>Nouveau don</h3>
                 <div class="step-indicators">
@@ -610,7 +636,9 @@
                     <div class="step-indicator" data-step="3">3</div>
                 </div>
             </div>
-
+           <form action="{{ route('don.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+     <input type="hidden" name="type" id="don_type">
             <div class="form-step active" id="step1">
                 <h4 style="font-size: 24px; font-weight: 500; margin-bottom: 20px; color: var(--color-black);">Type de don</h4>
                 <div class="type-selection-grid">
@@ -685,8 +713,12 @@
                     <button type="submit" class="btn-publish">Publier le don</button>
                 </div>
             </div>
+            </form>
         </div>
+
     </div>
+
+</body>
 
     <script>
         let currentStep = 1;
@@ -729,6 +761,34 @@
 
         // Initialize form
         updateFormVisibility();
-    </script>
-</body>
+
+
+    document.querySelectorAll('.type-option').forEach(function (element) {
+        element.addEventListener('click', function () {
+            const selectedType = this.getAttribute('data-type');
+
+            // Mettre à jour le champ caché avec la bonne valeur (adaptée au nom de la base)
+            let typeValue;
+            switch (selectedType) {
+                case 'vetements':
+                    typeValue = 'Vêtements';
+                    break;
+                case 'nourriture':
+                    typeValue = 'Nourriture';
+                    break;
+                case 'meubles':
+                    typeValue = 'Meubles';
+                    break;
+                default:
+                    typeValue = 'Autres';
+            }
+
+            document.getElementById('don_type').value = typeValue;
+
+            // Met à jour les styles (active step visuelle)
+            document.querySelectorAll('.type-option').forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+</script>
 </html>

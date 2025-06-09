@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Donateur;
 use App\Models\Besoin;
+use App\Models\Donation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -63,19 +64,30 @@ class DonateurController extends Controller
         return back()->withErrors(['email' => 'Email ou mot de passe incorrect.'])->withInput();
     }
 
-   public function showProfil()
-{
-    $donateur = Auth::guard('donateur')->user();
-    $initiales = strtoupper(substr($donateur->prenom, 0, 1) . substr($donateur->nom, 0, 1));
+    public function showProfil(Request $request)
+    {
+        $donateur = Auth::guard('donateur')->user();
+        $initiales = strtoupper(substr($donateur->prenom, 0, 1) . substr($donateur->nom, 0, 1));
 
-    // Récupérer TOUS les besoins non satisfaits (urgents + normaux)
-    $besoins = Besoin::whereNull('id_donateur') // Seulement les besoins non satisfaits
-                    ->with('association') // Charge les infos de l'association
-                    ->latest() // Tri par date récente
-                    ->get();
+        // Récupérer les besoins non satisfaits
+        $besoins = Besoin::whereNull('id_donateur')
+                       ->with('association')
+                       ->latest()
+                       ->get();
 
-    return view('donateur.profildonateur', compact('donateur', 'initiales', 'besoins'));
-}
+        // Récupérer les dons du donateur connecté
+        $dons = Donation::where('id_donateur', $donateur->id)
+                      ->latest()
+                      ->get();
+
+        return view('donateur.profildonateur', [
+            'donateur' => $donateur,
+            'initiales' => $initiales,
+            'besoins' => $besoins,
+            'dons' => $dons,
+            'currentView' => $request->input('view', 'besoins')
+        ]);
+    }
 
     public function logout(Request $request)
     {
@@ -110,6 +122,18 @@ public function showFormDon($id)
     $besoin = Besoin::findOrFail($id);
     return view('donateur.formdon', compact('besoin'));
 }
+// app/Http/Controllers/DonateurController.php
+
+public function profile()
+{
+    $donateur = auth()->guard('donateur')->user();
+
+    // Exemple : récupérer les dons du donateur
+    $dons = $donateur->donations;
+
+    return view('donateur.profile', compact('donateur', 'dons'));
+}
+
 
 }
 

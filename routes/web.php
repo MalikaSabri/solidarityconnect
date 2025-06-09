@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssociationController;
 use App\Http\Controllers\DonateurController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DonController;
 Route::get('/', function () {
     return view('acceuil');
 });
@@ -122,6 +123,23 @@ Route::post('/besoin/satisfaction/{id}', [DonateurController::class, 'satisfaire
 // Formulaire après satisfaction
 Route::get('/donateur/formdon/{besoin}', [DonateurController::class, 'showFormDon'])
     ->name('donateur.formdon');
+
+    Route::get('/donateur/profil', [DonateurController::class, 'showProfil'])
+    ->name('donateur.profil')
+    ->middleware('auth:donateur');
+
+
+Route::get('/donateur/profile', [DonateurController::class, 'profile'])->name('donateur.profile');
+
+// Affichage du formulaire
+Route::get('/donateur/formdon', [DonController::class, 'create'])
+    ->name('donateur.formdon')
+    ->middleware('auth:donateur');
+
+// Enregistrement du don
+Route::post('/donateur/formdon', [DonController::class, 'store'])
+    ->name('don.store')
+    ->middleware('auth:donateur');
 
 
 
