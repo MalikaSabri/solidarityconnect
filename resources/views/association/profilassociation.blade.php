@@ -286,7 +286,7 @@
                 margin: 0;
                 padding: 0;
             }
-        
+
             .logout-form button {
                 background: none;
                 border: none;
@@ -299,11 +299,11 @@
                 font-size: inherit;
                 padding: 0;
             }
-        
+
             .logout-form button:hover {
                 opacity: 1;
             }
-        
+
             .no-results {
                 grid-column: 1 / -1;
                 text-align: center;
@@ -324,8 +324,6 @@
                 z-index: 1000;
             }
 
-<<<<<<< HEAD
-=======
             .btn-interess {
                 background-color: #1E3A8A;
                 color: var(--color-white);
@@ -407,9 +405,207 @@
     color: var(--color-dark-blue);
     pointer-events: none;
 }
+/* Specific styles for the Recent Donations Section */
+.recent-donations-section .cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    /* Ensure it's visible when active, this overrides the inline style */
+}
 
->>>>>>> c9f5454e95a2a0755a64782d0b530749ecceb0bd
-            /* Responsive Design */
+.donation-card {
+    position: relative; /* Needed for absolute positioning of top buttons */
+    background-color: var(--color-white);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden; /* Ensures nothing spills out of rounded corners */
+}
+
+.card-image-wrapper {
+    background-color: var(--color-light-gray-bg); /* Light grey background for the image placeholder */
+    border-radius: 8px; /* Slightly less rounded than the card */
+    height: 150px; /* Fixed height for the image area */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-gray-text);
+    font-size: 16px;
+    margin-bottom: 20px;
+    overflow: hidden; /* Hide overflow for actual images */
+}
+
+.donation-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the area while maintaining aspect ratio */
+    border-radius: 8px;
+}
+
+.no-image-placeholder {
+    /* Styles are inherited from .card-image-wrapper for background, display, etc. */
+}
+
+.donation-card .btn-interess {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: var(--color-dark-blue);
+    color: var(--color-white);
+    padding: 6px 12px;
+    border-radius: 10px; /* More rounded corners for the button */
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    z-index: 10; /* Ensure it's above other elements */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.donation-card .btn-interess {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: var(--color-dark-blue);
+    color: var(--color-white);
+    padding: 6px 15px; /* Augmentation du padding horizontal */
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    z-index: 10;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* Ajoutez une largeur minimale si nécessaire, par exemple: */
+    min-width: 120px; /* Ajustez cette valeur si l'écriture n'est toujours pas claire */
+}
+
+.donation-card .status-tag { /* This was not defined in the original CSS, adding it for the "STATUS DON" button */
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--color-teal); /* Teal color from variables */
+    color: var(--color-white);
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    z-index: 10;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 0 0 15px 0; /* Adjust padding as needed */
+}
+
+.donation-card .card-title {
+    font-size: 20px; /* As seen in the image */
+    font-weight: 500;
+    color: var(--color-text-dark);
+    margin: 0 0 10px 0;
+}
+
+.donation-card .card-description {
+    font-size: 15px;
+    color: var(--color-gray-text);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    flex-grow: 1; /* Allows description to take available space */
+}
+
+.donation-card .card-footer {
+    display: flex;
+    justify-content: space-between; /* To push elements to ends */
+    align-items: center;
+    margin-top: auto; /* Push to the bottom */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 10px; /* Space between items if they wrap */
+}
+
+.donation-card .location-info {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: var(--color-gray-text);
+}
+
+.donation-card .location-info::before {
+    content: '📍'; /* Pin icon */
+    margin-right: 5px;
+    font-size: 18px;
+    color: #F44336; /* Red color for the pin as in the image */
+}
+
+.donation-card .info-tag { /* For 'Type de don' */
+    background-color: var(--color-blue-tag); /* Light blue background */
+    color: var(--color-dark-blue); /* Dark blue text */
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap; /* Prevent text wrapping inside the tag */
+}
+
+/* Responsive adjustments for the donation cards */
+@media (max-width: 768px) {
+    .recent-donations-section .cards-container {
+        grid-template-columns: 1fr; /* Stack cards on smaller screens */
+    }
+    .donation-card {
+        padding: 20px;
+    }
+    .donation-card .btn-interess,
+    .donation-card .status-tag {
+        font-size: 12px;
+        padding: 5px 10px;
+        background-size: 25px;
+    }
+    .card-image-wrapper {
+        height: 120px; /* Adjust image height */
+    }
+    .donation-card .card-title {
+        font-size: 18px;
+    }
+    .donation-card .card-description {
+        font-size: 14px;
+    }
+    .donation-card .location-info,
+    .donation-card .info-tag {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .donation-card {
+        padding: 15px;
+    }
+    .card-image-wrapper {
+        height: 100px;
+    }
+    .donation-card .btn-interess,
+    .donation-card .status-tag {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+    }
+    .donation-card .status-tag {
+        right: 10px;
+        left: unset; /* Reset left for status tag */
+    }
+    .donation-card .card-footer {
+        flex-direction: column; /* Stack footer elements */
+        align-items: flex-start;
+    }
+}
+
             @media (max-width: 1200px) {
                 .profile-page-wrapper {
                     flex-direction: column;
@@ -541,7 +737,7 @@
             }, 3000);
         </script>
         @endif
-        
+
         <header class="header">
             <a href="#" class="logo">SolidarityConnect</a>
             <form action="{{ route('association.logout') }}" method="POST" class="logout-form">
@@ -549,7 +745,7 @@
                 <button type="submit" class="logout-link">Déconnexion</button>
             </form>
         </header>
-    
+
         <div class="profile-page-wrapper">
             <div class="profile-left-panel">
                 <div class="profile-avatar" style="background-color: {{ $association->color }};">
@@ -565,178 +761,81 @@
                 </div>
                 <a href="{{ route('association.besoin.create') }}" class="btn-publish-need">publier un besoin</a>
             </div>
-    
-            <div class="profile-main-content">
-<<<<<<< HEAD
-                <section class="urgent-needs-section">
-                    <div class="section-header">
-                        <h3>Besoins Urgents</h3>
-                        <a href="{{ route('association.besoins.index') }}" class="view-all-link">Voir tous les besoins</a>
-=======
-            <section class="urgent-needs-section">
-<div class="section-header">
-    <h3>Besoins Urgents</h3>
-    <div class="view-selector">
-        <select id="content-selector" class="content-select">
-            <option value="besoins">Voir les besoins</option>
-            <option value="dons">Voir les dons</option>
-        </select>
-    </div>
-</div>
-     <div class="cards-container" id="besoins-container">
-    @forelse($allNeeds as $need)
-        <div class="card need-card">
-               <div class="card need-card">
-                    <div class="card-header">
-                        <h4 class="card-title">{{ $need->titre }}</h4>
->>>>>>> c9f5454e95a2a0755a64782d0b530749ecceb0bd
-                    </div>
-                    <div class="cards-container" id="besoins-container">
-                        @forelse($urgentNeeds as $index => $need)
-                            <div class="card need-card @if($index >= 3) hidden-besoin @endif">
-                                <div class="card-header">
-                                    <h4 class="card-title">{{ $need->titre }}</h4>
-                                </div>
-                                <p class="card-association-name">{{ $need->association->nom_complet }}</p>
-                                <p class="card-description">{{ $need->description }}</p>
-                                <div class="card-footer">
-                                    <span class="location-info">{{ $need->association->adresse }}</span>
-                                    <span class="info-tag @if($need->status == 'Urgent') urgent @endif">{{ $need->status }}</span>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="no-results">
-                                <p>Aucun besoin urgent trouvé</p>
-                            </div>
-                        @endforelse
-                    </div>
-<<<<<<< HEAD
-                    
-                    @if(count($urgentNeeds) > 3)
-                        <div class="load-more-container">
-                            <button id="load-more-besoins" class="btn-load-more">
-                                Afficher plus
-                            </button>
-                        </div>
-                    @endif
-                </section>
-        
-                <section class="recent-donations-section">
-                    <div class="section-header">
-                        <h3>Dons Récents</h3>
-                        <a href="{{ route('association.dons.index') }}" class="view-all-link">Voir tous les dons</a>
-=======
-                </div>
-        </div>
-    @empty
-        <div class="no-results">
-            <p>Aucun besoin trouvé</p>
-        </div>
-    @endforelse
-</div>
-    </section>
 
-            <section class="recent-donations-section">
- 
-   <div class="cards-container" id="dons-container" style="display: none;">
-    @forelse($allDonations as $donation)
-        <div class="card donation-card">
-           <div class="card donation-card">
-                    <span class="status-tag">{{ $donation->statut }}</span>
+            <div class="profile-main-content">
+<section class="urgent-needs-section">
+    <div class="section-header">
+        <h3>Besoins Urgents</h3>
+        <div class="view-selector">
+            <select id="content-selector" class="content-select">
+                <option value="besoins">Voir les besoins</option>
+                <option value="dons">Voir les dons</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="cards-container" id="besoins-container">
+        @forelse($urgentNeeds as $index => $need)
+            <div class="card need-card @if($index >= 3) hidden-besoin @endif">
+                <div class="card-header">
+                    <h4 class="card-title">{{ $need->titre }}</h4>
+                </div>
+                <p class="card-association-name">{{ $need->association->nom_complet }}</p>
+                <p class="card-description">{{ $need->description }}</p>
+                <div class="card-footer">
+                    <span class="location-info">{{ $need->association->adresse }}</span>
+                    <span class="info-tag @if($need->status == 'Urgent') urgent @endif">{{ $need->status }}</span>
+                </div>
+            </div>
+        @empty
+            <div class="no-results">
+                <p>Aucun besoin trouvé</p>
+            </div>
+        @endforelse
+    </div>
+</section>
+
+
+<section class="recent-donations-section">
+    <div class="cards-container" id="dons-container" style="display: none;">
+        @forelse($recentDonations as $donation)
+            <div class="card donation-card">
+                <div class="card-image-wrapper">
+                    @if($donation->image)
+                        <img src="{{ asset('storage/' . $donation->image) }}" alt="Image du don" class="donation-image">
+                    @else
+                        <div class="no-image-placeholder">Pas d'image</div>
+                    @endif
+                </div>
+
+                <div class="card-body">
+                    <h4 class="card-title">{{ $donation->titre }}</h4>
+                    <p class="card-description">{{ $donation->description }}</p>
+
+                    <div class="card-footer">
+                        <span class="location-info">{{ $donation->localisation }}</span>
+                        <span class="info-tag">{{ $donation->type }}</span>
+                        <span class="status-tag">{{ $donation->statut }}</span>
+                    </div>
+
                     <form action="{{ route('association.interesse', $donation->id) }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn-interess">m'interesse</button>
+                        <button type="submit" class="btn-interess">M'intéresse</button>
                     </form>
-                    <div class="card-image-placeholder">
-                        @if($donation->image)
-                            <img src="{{ asset('storage/' . $donation->image) }}" alt="Image du don">
-                        @else
-                            <span>Image du don</span>
-                        @endif
->>>>>>> c9f5454e95a2a0755a64782d0b530749ecceb0bd
-                    </div>
-                    <div class="cards-container">
-                        @forelse($recentDonations as $donation)
-                            <div class="card donation-card">
-                                <span class="status-tag">{{ $donation->statut }}</span>
-                                <form action="{{ route('association.interesse', $donation->id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn-interess">m'interesse</button>
-                                </form>
-                                <div class="card-image-placeholder">
-                                    @if($donation->image)
-                                        <img src="{{ asset('storage/' . $donation->image) }}" alt="Image du don">
-                                    @else
-                                        <span>Image du don</span>
-                                    @endif
-                                </div>
-                                <h4 class="card-title">{{ $donation->titre }}</h4>
-                                <p class="card-description">{{ $donation->description }}</p>
-                                <div class="card-footer">
-                                    <span class="location-info">{{ $donation->localisation }}</span>
-                                    <span class="info-tag">{{ $donation->type }}</span>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="no-results">
-                                <p>Aucun don récent trouvé</p>
-                            </div>
-                        @endforelse
-                    </div>
-<<<<<<< HEAD
-                </section>
-=======
                 </div>
-        </div>
-    @empty
-        <div class="no-results">
-            <p>Aucun don trouvé</p>
-        </div>
-    @endforelse
-</div>
-    </section>
->>>>>>> c9f5454e95a2a0755a64782d0b530749ecceb0bd
+            </div>
+        @empty
+            <div class="no-results">
+                <p>Aucun don récent trouvé</p>
+            </div>
+        @endforelse
+    </div>
+</section>
+
+
             </div>
         </div>
 
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const loadMoreBtn = document.getElementById('load-more-besoins');
-            if (loadMoreBtn) {
-                let visibleCount = 3;
-                const totalBesoins = {{ count($urgentNeeds) }};
-                
-                loadMoreBtn.addEventListener('click', function() {
-                    // Show next 3 besoins
-                    const hiddenCards = document.querySelectorAll('.hidden-besoin');
-                    const toShow = Math.min(3, hiddenCards.length);
-                    
-                    for (let i = 0; i < toShow; i++) {
-                        hiddenCards[i].classList.remove('hidden-besoin');
-                    }
-                    
-                    visibleCount += toShow;
-                    
-                    // Hide button if all are visible
-                    if (visibleCount >= totalBesoins) {
-                        loadMoreBtn.style.display = 'none';
-                    }
-                });
-            }
-            
-            // Auto-hide success message after 3 seconds
-            const successMessage = document.querySelector('.alert-success');
-            if (successMessage) {
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 3000);
-            }
-        });
-        </script>
-    </body>
-<<<<<<< HEAD
-</html>
-=======
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     const contentSelector = document.getElementById('content-selector');
@@ -767,5 +866,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-    </html>
->>>>>>> c9f5454e95a2a0755a64782d0b530749ecceb0bd
+  </body>
+</html>

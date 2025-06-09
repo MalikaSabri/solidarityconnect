@@ -14,6 +14,8 @@ class Interesse extends Model
         'id_donation',
         'interesse',
     ];
+    public $timestamps = false;
+
 
     public function association()
     {
