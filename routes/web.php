@@ -146,7 +146,9 @@ Route::get('/don/associations/{donation}', [DonController::class, 'voirAssociati
 
 Route::post('/don/accorder', [DonController::class, 'accorderDon'])->name('don.accorder');
 
-
+Route::get('/donateur/dons/{don}/details', [DonController::class, 'showDetails'])
+    ->name('donateur.dons.details')
+    ->middleware('auth:donateur');
 
 // -----------------------
 // Lougout

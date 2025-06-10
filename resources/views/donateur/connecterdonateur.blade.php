@@ -446,7 +446,7 @@ ul {
                     <label for="mot_de_passe">Mot de passe *</label>
                     <input type="password" id="password" name="mot_de_passe" required placeholder=" ">
                 </div>
-                <button type="submit" class="btn-inscrire">Inscrire</button>
+                <button type="submit" class="btn-inscrire">Connecter</button>
             </form>
         </div>
     </div>

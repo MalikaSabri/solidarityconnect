@@ -110,5 +110,22 @@ public function accorderDon(Request $request)
         return redirect('/');
     }
 
+    public function showDetails(Donation $don)
+{
+    // Vérifier que le don appartient bien au donateur connecté
+    if ($don->id_donateur != Auth::guard('donateur')->id()) {
+        abort(403);
+    }
+
+    return response()->json([
+        'titre' => $don->titre,
+        'type' => $don->type,
+        'statut' => $don->statut,
+        'description' => $don->description,
+        'localisation' => $don->localisation,
+        'date_disponible' => $don->date_disponible,
+        'image' => $don->image
+    ]);
+}
 
 }

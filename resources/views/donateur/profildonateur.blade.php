@@ -128,7 +128,7 @@
 
 /* Bouton Détails */
 .details-btn {
-    background-color: #2196F3;
+    background-color: #1E3A8A;
     color: white;
     padding: 6px 12px;
     border-radius: 4px;
@@ -136,7 +136,7 @@
 }
 
 .details-btn:hover {
-    background-color: #0d8bf2;
+    background-color: #1E3A8A;
 }
 
 /* Styles pour les différents statuts */
@@ -449,6 +449,51 @@
     outline: none;
 }
 
+/* Style de la modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 25px;
+    border-radius: 8px;
+    width: 60%;
+    max-width: 700px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        margin: 10% auto;
+    }
+}
+
         /* Responsive Design */
         @media (max-width: 1200px) {
             .profile-page-wrapper {
@@ -608,11 +653,11 @@
 <div class="profile-main-content">
     <section class="content-section">
       <div class="section-header">
-    <h3 id="section-title">{{ $currentView === 'besoins' ? 'Besoins Disponibles' : 'Mes Dons' }}</h3>
+    <h3 id="section-title">{{ $currentView === 'besoins' ? 'Besoins Disponibles' : 'Les Dons' }}</h3>
     <div class="view-selector">
         <select id="content-selector" class="content-select">
             <option value="besoins" {{ $currentView === 'besoins' ? 'selected' : '' }}>Voir les besoins</option>
-            <option value="dons" {{ $currentView === 'dons' ? 'selected' : '' }}>Voir mes dons</option>
+            <option value="dons" {{ $currentView === 'dons' ? 'selected' : '' }}>Voir les dons</option>
         </select>
     </div>
 </div>
@@ -656,9 +701,9 @@
             </div>
             <p class="card-type">Type: {{ $don->type }}</p>
             <p class="card-description">{{ Str::limit($don->description, 100) }}</p>
-            <div class="card-footer">
+                       <div class="card-footer">
                 <span class="date-info">Disponible le: {{ $don->date_disponible->format('d/m/Y') }}</span>
-                <a href="#" class="details-btn">Détails</a>
+                <button class="details-btn" onclick="showDonDetails({{ $don->id }})">Détails</button>
             </div>
         </div>
     @empty
@@ -666,6 +711,14 @@
             <p>Vous n'avez fait aucun don</p>
         </div>
     @endforelse
+</div>
+<div id="donDetailsModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div id="donDetailsContent">
+            <!-- Les détails seront chargés ici -->
+        </div>
+    </div>
 </div>
     </section>
 </div>
@@ -693,6 +746,40 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+function showDonDetails(donId) {
+    // Afficher le loader
+    document.getElementById('donDetailsContent').innerHTML = '<p>Chargement...</p>';
+    document.getElementById('donDetailsModal').style.display = 'block';
+
+    // Récupérer les détails via AJAX
+    fetch(`/donateur/dons/${donId}/details`)
+        .then(response => response.json())
+        .then(data => {
+            const detailsHtml = `
+                <h3>${data.titre}</h3>
+                <p><strong>Type:</strong> ${data.type}</p>
+                <p><strong>Statut:</strong> <span class="status-tag ${data.statut === 'Donné' ? 'delivered' : 'pending'}">${data.statut}</span></p>
+                <p><strong>Description:</strong> ${data.description}</p>
+                <p><strong>Localisation:</strong> ${data.localisation}</p>
+                <p><strong>Date de disponibilité:</strong> ${new Date(data.date_disponible).toLocaleDateString()}</p>
+                ${data.image ? `<img src="/storage/${data.image}" alt="Image du don" style="max-width: 100%; margin-top: 15px;">` : ''}
+            `;
+            document.getElementById('donDetailsContent').innerHTML = detailsHtml;
+        });
+}
+
+function closeModal() {
+    document.getElementById('donDetailsModal').style.display = 'none';
+}
+
+// Fermer la modal si on clique en dehors
+window.onclick = function(event) {
+    const modal = document.getElementById('donDetailsModal');
+    if (event.target == modal) {
+        closeModal();
+    }
+}
 </script>
     </div>
 </body>
